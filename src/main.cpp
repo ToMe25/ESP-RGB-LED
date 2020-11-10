@@ -27,58 +27,83 @@ const uint16_t LED_RATE = 5000;
 
 AsyncWebServer server(80);
 
-const std::string MAIN_PAGE =
+const std::string INDEX_HTML =
 		"<!DOCTYPE html>\n"
-		"<html>\n"
-		"<head><meta charset=\"utf-8\">\n"
+		"<html>\n<head>\n"
+		"<meta charset=\"utf-8\">\n"
 		"<title>Esp32 Led color control</title>\n"
-		"<style>body {\npadding: 0px;\nmargin: 0px;\n}\n"
-		"input {\nbackground-color: #d3d3d319;\nmargin: 8px 0;\nborder-radius: 4px;\n"
-		"border: 1px solid #ccc;\ntransition: background-color .2s;\n}\n"
-		"input:hover {\nbackground-color: #d3d3d388;\n}\n"
-		"a {\npadding: 15px;\nmargin: 0px;\ndisplay: inline-block;\n}\n"
-		".header {\nbackground-color: #858585;\nmargin: 0px;\nwidth: calc(100% - 8px);\n"
-		"border: 4px solid #737373;\ntext-align: right;\n}\n"
-		".user {\nbackground-color: #88AEAF;\n}\n"
-		".logout {\nbackground-color: #A26B5F;\ncursor: pointer;\n}\n"
-		".logout:link {\ncolor: #000000;\n}\n"
-		".logout:visited {\ncolor: #000000;\n}\n"
-		"[hidden] {\ndisplay: none !important;\n}</style>\n"
+		"<link rel=\"stylesheet\" type=\"text/css\" href=\"/index.css\">\n"
 		"</head>\n"
-		"<body bgcolor=\"$color\"><div class=\"header\"><a class=\"logout\" href=\"$logout\">Logout</a>\n"
-		"<a class=\"user\">$user</a></div>\n"
-		"<center><form method=\"post\">\n"
+		"<body bgcolor=\"$color\">\n"
+		"<div class=\"header\">\n"
+		"<a class=\"logout\" href=\"$logout\">Logout</a>\n"
+		"<a class=\"user\">$user</a>\n"
+		"</div>\n<center>\n"
+		"<form method=\"post\">\n"
 		"<input name=\"color\" type=\"color\" value=\"$color\" id=\"color\" pattern=\"^#([A-Fa-f0-9]{6})$\" "
 		"required title=\"Submit hex value\" placeholder=\"$color\"><br>\n"
 		"<input type=\"submit\" value=\"Submit\">\n"
-		"</form></center></body></html>";
+		"</form>\n"
+		"</center>\n</body>\n</html>\n";
 
-const std::string LOGIN_PAGE =
-		"<!DOCTYPE html>\n<html>\n"
-		"<head><meta charset=\"utf-8\">\n"
+const std::string LOGIN_HTML =
+		"<!DOCTYPE html>\n"
+		"<html>\n<head>\n"
+		"<meta charset=\"utf-8\">\n"
 		"<title>Login</title>\n"
-		"<style>form {\nbackground-color: #f0f0f0;\nborder: 4px solid #d3d3d3;\n"
-		"padding: 50px;\npadding-top: 30px;\nborder-radius: 8px;\ndisplay: inline-block;\n}\n"
-		"input {\npadding: 12px 20px;\nmargin: 8px 0;\ndisplay: inline-block;\nborder: 1px solid #ccc;\n"
-		"border-radius: 20px;\nbox-sizing: border-box;\n}\n"
-		"button {\nbackground-color: #4CC550;\ncolor: white;\npadding: 14px 100px;\nmargin: 8px 0;\n"
-		"border: none;\nborder-radius: 12px;\ncursor: pointer;\ntransition: all 0.2s;\n"
-		"-webkit-transition: all 0.2s;\nbox-shadow: 4px 6px 12px 2px #888888;\n}\n"
-		"button:hover {\nopacity: 0.8;\nbox-shadow: none;\n}\n"
-		".error {\nbackground-color: #df3120;\npadding: 5px;\ntext-align: center;\n"
-		"border: 3px solid #9f0000;\nfont-size: 22pt;\nborder-radius: 8px;\n"
-		"margin: 10px;\n}</style>\n"
+		"<link rel=\"stylesheet\" type=\"text/css\" href=\"/login.css\">\n"
 		"</head>\n"
-		"<body><center><form action=\"/login\" method=\"post\">\n"
+		"<body>\n<center>\n"
+		"<form action=\"/login\" method=\"post\">\n"
 		"<!--ERROR-->\n"
 		"<label for=\"name\">Username</label>\n"
 		"<input name=\"name\" type=\"text\" id=\"name\" required placeholder=\"Username\"><br>\n"
 		"<label for=\"name\">Password</label>\n"
 		"<input name=\"pwd\" type=\"password\" id=\"pwd\" required placeholder=\"Password\"><br>\n"
 		"<button type=\"submit\">Login</button>\n"
-		"</form></center></body></html>";
+		"</form>\n"
+		"</center>\n</body>\n</html>\n";
 
-const std::string ERROR_HTML = "<p class=\"error\">$error</p>";
+const std::string LOGIN_ERROR_HTML = "<p class=\"error\">$error</p>";
+
+const std::string NOT_FOUND_HTML =
+		"<!DOCTYPE html>\n"
+		"<html>\n<head>\n"
+		"<meta charset=\"utf-8\">\n"
+		"<title>404 Not Found</title>\n"
+		"</head>\n"
+		"<body>\n"
+		"<h1>Error 404 Not Found!</h1>\n"
+		"<a href=\"/\">Main Page</a>\n"
+		"<p>Accessed page: $url</p>\n"
+		"</body>\n</html>\n";
+
+const std::string INDEX_CSS =
+		"body {\n  padding: 0px;\n  margin: 0px;\n}\n"
+		"input {\n  background-color: #d3d3d319;\n  margin: 8px 0;\n  border-radius: 4px;\n"
+		"  border: 1px solid #ccc;\n  transition: background-color .2s;\n}\n"
+		"input:hover {\n  background-color: #d3d3d388;\n}\n"
+		"a {\n  padding: 15px;\n  margin: 0px;\n  display: inline-block;\n}\n"
+		".header {\n  background-color: #858585;\n  margin: 0px;\n  width: calc(100% - 8px);\n"
+		"  border: 4px solid #737373;\n  text-align: right;\n}\n"
+		".user {\n  background-color: #88AEAF;\n}\n"
+		".logout {\n  background-color: #A26B5F;\n  cursor: pointer;\n}\n"
+		".logout:link {\n  color: #000000;\n}\n"
+		".logout:visited {\n  color: #000000;\n}\n"
+		"[hidden] {\n  display: none !important;\n}\n";
+
+const std::string LOGIN_CSS =
+		"form {\n  background-color: #f0f0f0;\n  border: 4px solid #d3d3d3;\n"
+		"  padding: 50px;\n  padding-top: 30px;\n  border-radius: 8px;\n  display: inline-block;\n}\n"
+		"input {\n  padding: 12px 20px;\n  margin: 8px 0;\n  display: inline-block;\n"
+		"  border: 1px solid #ccc;\n  border-radius: 20px;\n  box-sizing: border-box;\n}\n"
+		"button {\n  background-color: #4CC550;\n  color: white;\n  padding: 14px 100px;\n"
+		"  margin: 8px 0;\n  border: none;\n  border-radius: 12px;\n  cursor: pointer;\n"
+		"  transition: all 0.2s;\n  -webkit-transition: all 0.2s;\n  box-shadow: 4px 6px 12px 2px #888888;\n}\n"
+		"button:hover {\n  opacity: 0.8;\n  box-shadow: none;\n}\n"
+		".error {\n  background-color: #df3120;\n  padding: 5px;\n  text-align: center;\n"
+		"  border: 3px solid #9f0000;\n  font-size: 22pt;\n  border-radius: 8px;\n"
+		"  margin: 10px;\n}\n";
 
 const std::string DEFAULT_USERNAME = "admin";
 const std::string DEFAULT_PASSWORD = "test";
@@ -147,7 +172,8 @@ std::pair<std::string, std::string> check_login(AsyncWebServerRequest *request) 
 }
 
 void on_not_found(AsyncWebServerRequest *request) {
-	request->send(404, "text/plain", "Not found");
+	std::string response = std::regex_replace(NOT_FOUND_HTML, std::regex("\\$url"), request->url().c_str());
+	request->send(404, "text/html", response.c_str());
 }
 
 void on_get_index(AsyncWebServerRequest *request) {
@@ -162,7 +188,7 @@ void on_get_index(AsyncWebServerRequest *request) {
 	os << std::hex;
 	os << std::right;
 	os << color;
-	std::string response = std::regex_replace(MAIN_PAGE, std::regex("\\$color"), os.str());
+	std::string response = std::regex_replace(INDEX_HTML, std::regex("\\$color"), os.str());
 	response = std::regex_replace(response, std::regex("\\$user"), session.first);
 	if (session.first == "guest") {
 		response = std::regex_replace(response, std::regex("\\$logout\">Logout"), "/login\">Login");
@@ -191,7 +217,7 @@ void on_post_index(AsyncWebServerRequest *request) {
 }
 
 void on_get_login(AsyncWebServerRequest *request) {
-	request->send(200, "text/html", LOGIN_PAGE.c_str());
+	request->send(200, "text/html", LOGIN_HTML.c_str());
 }
 
 void on_post_login(AsyncWebServerRequest *request) {
@@ -218,8 +244,8 @@ void on_post_login(AsyncWebServerRequest *request) {
 	} else {
 		error = "Missing password or name!";
 	}
-	error = std::regex_replace(ERROR_HTML, std::regex("\\$error"), error);
-	std::string response = std::regex_replace(LOGIN_PAGE, std::regex("<!--ERROR-->"), error);
+	error = std::regex_replace(LOGIN_ERROR_HTML, std::regex("\\$error"), error);
+	std::string response = std::regex_replace(LOGIN_HTML, std::regex("<!--ERROR-->"), error);
 	request->send(200, "text/html", response.c_str());
 }
 
@@ -274,6 +300,7 @@ void setup() {
 	Serial.print("IP Address: ");
 	Serial.println(localhost);
 
+	// html files
 	server.on("/", HTTP_GET, on_get_index);
 	server.on("/", HTTP_POST, on_post_index);
 	server.on("/index", HTTP_GET, on_get_index);
@@ -283,7 +310,14 @@ void setup() {
 	server.on("/login", HTTP_POST, on_post_login);
 
 	server.on("/logout", HTTP_GET, on_get_logout);
-	server.on("/logout", HTTP_POST, on_get_logout);
+
+	// stylesheets
+	server.on("/index.css", HTTP_GET, [] (AsyncWebServerRequest *request) {
+		request->send(200, "text/css", INDEX_CSS.c_str());
+	});
+	server.on("/login.css", HTTP_GET, [] (AsyncWebServerRequest *request) {
+		request->send(200, "text/css", LOGIN_CSS.c_str());
+	});
 
 	server.onNotFound(on_not_found);
 
