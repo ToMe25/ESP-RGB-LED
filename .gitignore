@@ -4,4 +4,7 @@
 # Eclipse
 .project
 .cproject
-.settings
+.settings/
+
+# NetBeans
+nbproject/

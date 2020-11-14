@@ -140,21 +140,31 @@ string WebserverHandler::finish_header(string page, string username, string sess
 }
 
 void WebserverHandler::on_get_index(AsyncWebServerRequest *request) {
-	pair<string, std::string> session = check_login(request);
+	pair<string, string> session = check_login(request);
 	if (require_login && session.first == "") {
 		return;
 	}
 
-	std::ostringstream os;
+	string response = finish_header(INDEX_HTML, session.first, session.second);
+
+	ostringstream os;
 	os << '#';
 	os.fill('0');
 	os << setw(6);
 	os << hex;
 	os << right;
 	os << main::getColor();
-	std::string response = finish_header(INDEX_HTML, session.first, session.second);
+	response = regex_replace(response, regex("\\$color"), os.str());
 
-	response = std::regex_replace(response, std::regex("\\$color"), os.str());
+        os.str("");
+        os.clear();
+        os << '#';
+	os.fill('0');
+	os << setw(6);
+	os << hex;
+	os << right;
+	os << (main::getColor() ^ 0xFFFFFF);
+        response = regex_replace(response, regex("\\$inverted"), os.str());
 
 	request->send(200, "text/html", response.c_str());
 }
@@ -166,7 +176,7 @@ void WebserverHandler::on_post_index(AsyncWebServerRequest *request) {
 	}
 	if (request->hasParam("color"), true) {
 		uint color;
-		std::istringstream is(
+		istringstream is(
 				request->getParam("color", true)->value().substring(1).c_str());
 		is >> hex >> color;
 		main::setColor(color);
@@ -235,7 +245,7 @@ void WebserverHandler::on_get_sessions(AsyncWebServerRequest *request) {
 	if (session.first == DEFAULT_USERNAME) {
 		string response = finish_header(SESSIONS_HTML, session.first, session.second);
 
-		for (auto const& login : login_data) {
+		for (pair<string, string> const& login : login_data) {
 			if (login.first != DEFAULT_USERNAME) {
 				string session_entry = SESSIONS_SESSION_HTML;
 				session_entry = regex_replace(session_entry, regex("\\$name"), login.first);
@@ -279,7 +289,7 @@ void WebserverHandler::on_post_sessions(AsyncWebServerRequest *request) {
 			} else {
 				login_data.erase(login_data.find(username));
 
-				for (auto const& sess : session_users) {
+				for (pair<string, string> const& sess : session_users) {
 					if (sess.second == username) {
 						sessions.erase(sessions.find(sess.first));
 						session_users.erase(session_users.find(sess.first));
@@ -299,7 +309,7 @@ void WebserverHandler::on_post_sessions(AsyncWebServerRequest *request) {
 
 		string response = finish_header(SESSIONS_HTML, session.first, session.second);
 
-		for (auto const& login : login_data) {
+		for (pair<string, string> const& login : login_data) {
 			if (login.first != DEFAULT_USERNAME) {
 				string session_entry = SESSIONS_SESSION_HTML;
 				session_entry = regex_replace(session_entry, regex("\\$name"), login.first);

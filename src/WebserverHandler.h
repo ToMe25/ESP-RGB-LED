@@ -68,14 +68,14 @@ private:
 					"<link rel=\"stylesheet\" type=\"text/css\" href=\"/index.css\">\n"
 					"<link rel=\"stylesheet\" type=\"text/css\" href=\"/header.css\">\n"
 					"</head>\n"
-					"<body bgcolor=\"$color\">\n").append(HEADER_HTML).append(
+					"<body style=\"background-color: $color;\">\n").append(HEADER_HTML).append(
 							"<center>\n"
 							"<form method=\"post\">\n"
 							"<label for=\"color\">Select light color</label>\n<br/>\n"
 							"<input name=\"color\" type=\"color\" value=\"$color\" id=\"color\" pattern=\"^#([A-Fa-f0-9]{6})$\""
 							" required title=\"Submit hex value\" placeholder=\"#hexcolor\">\n<br/>\n"
 							"<label for=\"submit\">Apply light color</label>\n<br/>\n"
-							"<button id=\"submit\" type=\"submit\" value=\"Submit\">Apply</button>\n"
+							"<button id=\"submit\" type=\"submit\" value=\"Submit\" style=\"background-color: $inverted;color: $color;\">Apply</button>\n"
 							"</form>\n"
 							"</center>\n</body>\n</html>\n");
 
@@ -171,15 +171,14 @@ private:
 			"</body>\n</html>\n";
 
 	const char *INDEX_CSS =
-			"input[type=color] {\n  background-color: #d3d3d319;\n  margin: 8px;\n  border-radius: 4px;\n"
-			"  border: 1px solid #c0c0c0;\n  transition: background-color 0.2s;\n"
-			"  -webkit-transition: background-color 0.2s;\n}\n"
+			"input[type=color] {\n  background-color: #d3d3d319;\n  margin: 8px;\n"
+                        "  border-radius: 4px;\n  border: 1px solid #c0c0c0;\n"
+                        "  transition: background-color 0.2s;\n  -webkit-transition: background-color 0.2s;\n}\n"
 			"input[type=color]:hover {\n  background-color: #d3d3d399;\n}\n"
-			"button {\n  background-color: #d3d39566;\n  color: #000000;\n  margin: 8px;\n"
-			"  padding: 4px 12px;\n  border-radius: 4px;\n  border: 1px solid #c0c0c0;\n"
-			"  transition: background-color 0.2s;\n  -webkit-transition: background-color 0.2s;\n}\n"
-			"button:hover {\n  background-color: #d3d39599;\n}\n"
-			"button:active {\n  background-color: #d3d395bb;\n}\n"
+			"button {\n  margin: 8px;\n  padding: 8px 24px;\n  border-radius: 4px;\n  border: 3px solid #acacac;\n"
+			"  transition: opacity 0.2s;\n  -webkit-transition: opacity 0.2s;\n}\n"
+			"button:hover {\n  opacity: 0.85;\n}\n"
+			"button:active {\n  opacity: 0.7;\n}\n"
 			"form {\n  background-color: #d3d3d388;\n  display: inline-block;\n  padding: 10px;\n"
 			"  border-radius: 6px;\n  border: 3px solid #d8d8d888;\n}\n";
 
