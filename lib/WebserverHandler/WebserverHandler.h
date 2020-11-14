@@ -11,10 +11,11 @@
 #include <string>
 #include <map>
 #include <ESPAsyncWebServer.h>
+#include <LedHandler.h>
 
 class WebserverHandler {
 public:
-	WebserverHandler();
+	WebserverHandler(LedHandler &led_handler, bool default_require_login = true);
 	virtual ~WebserverHandler();
 
 	void init();
@@ -38,7 +39,9 @@ private:
 
 	AsyncWebServer server = AsyncWebServer(PORT);
 
-	bool require_login = true;
+	LedHandler &light;
+
+	bool require_login;
 
 	std::map<std::string, std::string> login_data;
 	std::map<std::string, std::string> sessions;
@@ -172,8 +175,8 @@ private:
 
 	const char *INDEX_CSS =
 			"input[type=color] {\n  background-color: #d3d3d319;\n  margin: 8px;\n"
-                        "  border-radius: 4px;\n  border: 1px solid #c0c0c0;\n"
-                        "  transition: background-color 0.2s;\n  -webkit-transition: background-color 0.2s;\n}\n"
+			"  border-radius: 4px;\n  border: 1px solid #c0c0c0;\n"
+			"  transition: background-color 0.2s;\n  -webkit-transition: background-color 0.2s;\n}\n"
 			"input[type=color]:hover {\n  background-color: #d3d3d399;\n}\n"
 			"button {\n  margin: 8px;\n  padding: 8px 24px;\n  border-radius: 4px;\n  border: 3px solid #acacac;\n"
 			"  transition: opacity 0.2s;\n  -webkit-transition: opacity 0.2s;\n}\n"
