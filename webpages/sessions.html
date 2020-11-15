@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Temporary Sessions</title>
+<link rel="stylesheet" type="text/css" href="/sessions.css">
+<link rel="stylesheet" type="text/css" href="/header.css">
+</head>
+<body>
+<div class="header">
+<a class="headerelement index" href="$index">Home</a>
+<a class="headerelement settings" href="$settings" hidden>Settings</a>
+<a class="headerelement sessions" href="$sessions" hidden>Sessions</a>
+<a class="headerelement logout" href="$logout">Login</a>
+<a class="headerelement user">$user</a>
+</div>
+<center>
+<div class="main">
+<big>
+<b>Temporary Logins</b>
+</big>
+<br/>
+<small>All the temporary logins. They will be deleted with the next restart.</small>
+<br/>
+<form method="post">
+<div>
+<p>Username: $name</p>
+<p>Password: $password</p>
+</div>
+<button class="delete" type="submit" name="delete" value="$name">Delete</button>
+</form>
+<!--SESSIONS-->
+<br/>
+<big>
+<b>Create temporary login</b>
+</big>
+<br/>
+<small>All logins created with this function will be deleted with the next restart.</small>
+<p class="error" hidden>$error</p>
+<form method="post">
+<b>
+<p>Login Data:</p>
+</b>
+<label for="name">Username</label>
+<input id="name" name="name" placeholder="Username" required type="text">
+<br/>
+<label for="password">Password</label>
+<input id="password" name="password" placeholder="Password" required type="text">
+<br/>
+<button class="create" type="submit">Create</button>
+</form>
+</div>
+</center>
+</body>
+</html>

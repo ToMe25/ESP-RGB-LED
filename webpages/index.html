@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Esp32 Led color control</title>
+<link rel="stylesheet" type="text/css" href="/index.css">
+<link rel="stylesheet" type="text/css" href="/header.css">
+<script type="text/javascript" src="index.js"></script>
+</head>
+<body style="background-color: $color;">
+<div class="header">
+<a class="headerelement index" href="$index">Home</a>
+<a class="headerelement settings" href="$settings" hidden>Settings</a>
+<a class="headerelement sessions" href="$sessions" hidden>Sessions</a>
+<a class="headerelement logout" href="$logout">Login</a>
+<a class="headerelement user">$user</a>
+</div>
+<center>
+<form id="color_select" name="color_select" method="post">
+<label for="color">Select light color</label>
+<br/>
+<input name="color" type="color" value="$color" id="color" pattern="^#([A-Fa-f0-9]{6})$" required title="Submit hex value" placeholder="#hexcolor">
+<br/>
+Or select a color with these sliders
+<br/>
+<lable for="red">Red:</lable>
+<input type="range" value="127" id="red" pattern="^([0-9]{3})$" required title="Submit red" min="0" max="255" placeholder="100" class="red">
+<br/>
+<lable for="green">Green:</lable>
+<input type="range" value="127" id="green" pattern="^([0-9]{3})$" required title="Submit green" min="0" max="255" placeholder="100" class="green">
+<br/>
+<lable for="blue">Blue:</lable>
+<input type="range" value="127" id="blue" pattern="^([0-9]{3})$" required title="Submit blue" min="0" max="255" placeholder="100" class="blue">
+<br/>
+<label for="submit">Apply the light color</label>
+<br/>
+<button id="submit" type="submit" value="Submit" style="color: $color;">Apply</button>
+</form>
+</center>
+</body>
+</html>
