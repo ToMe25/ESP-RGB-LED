@@ -150,6 +150,14 @@ void WebserverHandler::init() {
 		request->send(200, "text/javascript", INDEX_JS);
 	});
 
+	// json
+	server.on("/color.json", HTTP_GET, [this](AsyncWebServerRequest *request) {
+		ostringstream os;
+		os << light.getColor();
+		request->send(200, "text/json", regex_replace("{\"color\": $color}", regex("\\$color"), os.str()).c_str());
+	});
+
+	// errors
 	server.onNotFound([this](AsyncWebServerRequest *request) {
 		on_not_found(request);
 	});

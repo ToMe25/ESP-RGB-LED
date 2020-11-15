@@ -284,25 +284,28 @@ private:
 			"[hidden] {\n  display: none !important;\n}\n";
 
 	const char *INDEX_JS =
-			"var colorSelect\nvar redSelect\nvar greenSelect\nvar blueSelect\nvar applyButton\nvar color\n\n"
-			"window.onload = init\n\nfunction init() {\n  colorSelect = document.color_select.color\n"
-			"  redSelect = document.color_select.red\n  greenSelect = document.color_select.green\n"
-			"  blueSelect = document.color_select.blue\n  applyButton = document.getElementById('submit')\n\n"
+			"var colorSelect\nvar redSelect\nvar greenSelect\nvar blueSelect\nvar applyButton\nvar color\nvar interval\n\n"
+			"window.onload = init\n\ninterval = window.setInterval(checkColor, 5000)\n\nfunction init() {\n"
+			"  colorSelect = document.color_select.color\n  redSelect = document.color_select.red\n"
+			"  greenSelect = document.color_select.green\n  blueSelect = document.color_select.blue\n"
+			"  applyButton = document.getElementById('submit')\n\n"
 			"  colorSelect.addEventListener(\"change\", onColorChange, false)\n"
 			"  redSelect.addEventListener(\"change\", onColorChange, false)\n"
 			"  greenSelect.addEventListener(\"change\", onColorChange, false)\n"
 			"  blueSelect.addEventListener(\"change\", onColorChange, false)\n\n"
-			"  color = parseInt(colorSelect.value.substring(1, 7), 16)\n  redSelect.value = color >> 16\n"
-			"  greenSelect.value = (color & 0x00FF00) >> 8\n  blueSelect.value = color & 0x0000FF\n"
-			"  applyButton.style.backgroundColor = '#' + (color ^ 0xFFFFFF).toString(16).padStart(6, '0')\n}\n\n"
-			"function onColorChange() {\n  if (this.id == \"color\") {\n    color = parseInt(this.value.substring(1, 7), 16)\n"
-			"  } else if (this.id == \"red\") {\n    color = color & 0x00FFFF | this.value << 16\n"
-			"  } else if (this.id == \"green\") {\n    color = color & 0xFF00FF | this.value << 8\n"
-			"  } else if (this.id == \"blue\") {\n    color = color & 0xFFFF00 | this.value\n  }\n\n"
+			"  color = parseInt(colorSelect.value.substring(1, 7), 16)\n  setColor(color)\n}\n\nfunction onColorChange() {\n"
+			"  window.clearInterval(interval)\n  if (this.id == \"color\") {\n"
+			"    color = parseInt(this.value.substring(1, 7), 16)\n  } else if (this.id == \"red\") {\n"
+			"    color = color & 0x00FFFF | this.value << 16\n  } else if (this.id == \"green\") {\n"
+			"    color = color & 0xFF00FF | this.value << 8\n  } else if (this.id == \"blue\") {\n"
+			"    color = color & 0xFFFF00 | this.value\n  }\n  setColor(color)\n}\n\nfunction setColor(color) {\n"
 			"  var hexColor = '#' + color.toString(16).padStart(6, '0')\n  document.body.style.backgroundColor = hexColor\n"
 			"  colorSelect.value = hexColor\n  redSelect.value = color >> 16\n  greenSelect.value = (color & 0x00FF00) >> 8\n"
 			"  blueSelect.value = color & 0x0000FF\n  applyButton.style.color = hexColor\n"
-			"  applyButton.style.backgroundColor = '#' + (color ^ 0xFFFFFF).toString(16).padStart(6, '0')\n}\n";
+			"  applyButton.style.backgroundColor = '#' + (color ^ 0xFFFFFF).toString(16).padStart(6, '0')\n}\n\n"
+			"function checkColor() {\n  fetch('color.json', {method: 'get'})\n  .then((res) => {\n    return res.json()\n"
+			"  })\n  .then((out) => {\n    color = out.color\n    setColor(color)\n  })\n  .catch((err) => {\n"
+			"    throw err\n  })\n}\n";
 };
 
 #endif
