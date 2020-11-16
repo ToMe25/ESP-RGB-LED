@@ -5,19 +5,8 @@ form {
   border-radius: 6px;
   border: 3px solid #d8d8d888;
 }
-input[type=color] {
-  background-color: #d3d3d319;
-  margin: 8px;
-  border-radius: 4px;
-  border: 1px solid #c0c0c0;
-  transition: background-color 0.2s;
-  -webkit-transition: background-color 0.2s;
-}
-input[type=color]:focus {
-  outline: none;
-}
-input[type=color]:hover {
-  background-color: #d3d3d399;
+hr {
+  opacity: 0.5;
 }
 button {
   margin: 8px;
@@ -33,19 +22,40 @@ button:hover {
 button:active {
   opacity: 0.7;
 }
+input[type=color] {
+  background-color: #d3d3d326;
+  margin: 8px;
+  border-radius: 4px;
+  border: 1px solid #c0c0c0;
+  transition: background-color 0.2s;
+  -webkit-transition: background-color 0.2s;
+}
+input[type=color]:focus {
+  outline: none;
+}
+input[type=color]:hover {
+  background-color: #d3d3d399;
+}
+input[type=number] {
+  background-color: #d3d3d399;
+  margin: 4px;
+  padding: 4px;
+  border-radius: 6px;
+  border: 2px solid #767676;
+  transition: background-color 0.2s;
+  -webkit-transition: background-color 0.2s;
+}
+input[type=number]:hover {
+  background-color: #d3d3d365;
+}
 input[type=range] {
   background-color: #00000000;
+  margin: 3px;
   border: none;
   cursor: pointer;
   -webkit-appearance: none;
   transition: opacity 0.2s;
   -webkit-transition: opacity 0.2s;
-}
-input[type=range]:focus {
-  outline: none;
-}
-input[type=range]:hover {
-  opacity: 0.8;
 }
 input[type=range]::-webkit-slider-runnable-track {
   border-radius: 5px;
@@ -113,4 +123,10 @@ input[type=range].blue::-moz-range-track {
 input[type=range].blue::-moz-range-thumb {
   background-color: #0000ff;
   border: 2px solid #00007f;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]:hover {
+  opacity: 0.8;
 }

@@ -20,6 +20,8 @@ public:
 
 	void writeColor();
 
+	uint16_t fade = 0;
+
 private:
 	uint color = 0xffff00;
 	uint8_t rgb[3];

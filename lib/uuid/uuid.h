@@ -5,8 +5,8 @@
  *      Author: ToMe25
  */
 
-#ifndef SRC_UUID_H_
-#define SRC_UUID_H_
+#ifndef LIB_UUID_UUID_H_
+#define LIB_UUID_UUID_H_
 
 #include <string>
 

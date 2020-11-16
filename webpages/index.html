@@ -20,18 +20,22 @@
 <label for="color">Select light color</label>
 <br/>
 <input name="color" type="color" value="$color" id="color" pattern="^#([A-Fa-f0-9]{6})$" required title="Submit hex value" placeholder="#hexcolor">
-<br/>
+<hr/>
 Or select a color with these sliders
 <br/>
 <lable for="red">Red:</lable>
-<input type="range" value="127" id="red" pattern="^([0-9]{3})$" required title="Submit red" min="0" max="255" placeholder="100" class="red">
+<input type="range" value="127" id="red" pattern="^([0-9]{3})$" title="Submit red" min="0" max="255" placeholder="100" class="red">
 <br/>
 <lable for="green">Green:</lable>
-<input type="range" value="127" id="green" pattern="^([0-9]{3})$" required title="Submit green" min="0" max="255" placeholder="100" class="green">
+<input type="range" value="127" id="green" pattern="^([0-9]{3})$" title="Submit green" min="0" max="255" placeholder="100" class="green">
 <br/>
 <lable for="blue">Blue:</lable>
-<input type="range" value="127" id="blue" pattern="^([0-9]{3})$" required title="Submit blue" min="0" max="255" placeholder="100" class="blue">
+<input type="range" value="127" id="blue" pattern="^([0-9]{3})$" title="Submit blue" min="0" max="255" placeholder="100" class="blue">
+<hr/>
+<label for="fading">How long should the light color fade<br/> from the last color to the newly selected one?</label>
 <br/>
+<input name="fade" type="number" value="$fade" id="fade" required title="Submit fading time" placeholder="2.0" min="0" max="10" step="0.1">seconds
+<hr/>
 <label for="submit">Apply the light color</label>
 <br/>
 <button id="submit" type="submit" value="Submit" style="color: $color;">Apply</button>

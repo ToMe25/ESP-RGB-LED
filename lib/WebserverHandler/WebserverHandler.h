@@ -5,8 +5,8 @@
  *      Author: ToMe25
  */
 
-#ifndef SRC_WEBSERVERHANDLER_H_
-#define SRC_WEBSERVERHANDLER_H_
+#ifndef LIB_WEBSERVERHANDLER_WEBSERVERHANDLER_H_
+#define LIB_WEBSERVERHANDLER_WEBSERVERHANDLER_H_
 
 #include <string>
 #include <map>
@@ -29,6 +29,8 @@ public:
 	void on_post_sessions(AsyncWebServerRequest *request);
 	void on_get_settings(AsyncWebServerRequest *request);
 	void on_post_settings(AsyncWebServerRequest *request);
+
+	void on_get_properties_json(AsyncWebServerRequest *request);
 
 	void on_not_found(AsyncWebServerRequest *request);
 
@@ -77,19 +79,22 @@ private:
 							"<form id=\"color_select\" name=\"color_select\" method=\"post\">\n"
 							"<label for=\"color\">Select light color</label>\n<br/>\n"
 							"<input name=\"color\" type=\"color\" value=\"$color\" id=\"color\" pattern=\"^#([A-Fa-f0-9]{6})$\""
-							" required title=\"Submit hex value\" placeholder=\"#hexcolor\">\n<br/>\n"
+							" required title=\"Submit hex value\" placeholder=\"#hexcolor\">\n<hr/>\n"
 							"Or select a color with these sliders\n<br/>\n"
 							"<lable for=\"red\">Red:</lable>\n"
-							"<input type=\"range\" value=\"127\" id=\"red\" pattern=\"^([0-9]{3})$\" required"
-							" title=\"Submit red\" min=\"0\" max=\"255\" placeholder=\"100\" class=\"red\">\n<br/>\n"
+							"<input type=\"range\" value=\"127\" id=\"red\" pattern=\"^([0-9]{3})$\" title=\"Submit red\""
+							" min=\"0\" max=\"255\" placeholder=\"100\" class=\"red\">\n<br/>\n"
 							"<lable for=\"green\">Green:</lable>\n"
-							"<input type=\"range\" value=\"127\" id=\"green\" pattern=\"^([0-9]{3})$\" required"
-							" title=\"Submit green\" min=\"0\" max=\"255\" placeholder=\"100\" class=\"green\">\n<br/>\n"
+							"<input type=\"range\" value=\"127\" id=\"green\" pattern=\"^([0-9]{3})$\" title=\"Submit green\""
+							" min=\"0\" max=\"255\" placeholder=\"100\" class=\"green\">\n<br/>\n"
 							"<lable for=\"blue\">Blue:</lable>\n"
-							"<input type=\"range\" value=\"127\" id=\"blue\" pattern=\"^([0-9]{3})$\" required"
-							" title=\"Submit blue\" min=\"0\" max=\"255\" placeholder=\"100\" class=\"blue\">\n<br/>\n"
-							"<label for=\"submit\">Apply the light color</label>\n"
-							"<br/>\n"
+							"<input type=\"range\" value=\"127\" id=\"blue\" pattern=\"^([0-9]{3})$\" title=\"Submit blue\""
+							" min=\"0\" max=\"255\" placeholder=\"100\" class=\"blue\">\n<hr/>\n"
+							"<label for=\"fading\">How long should the light color fade<br/> from the last color to the newly"
+							" selected one?</label>\n<br/>\n"
+							"<input name=\"fade\" type=\"number\" value=\"$fade\" id=\"fade\" required"
+							" title=\"Submit fading time\" placeholder=\"2.0\" min=\"0\" max=\"10\" step=\"0.1\">seconds\n<hr/>\n"
+							"<label for=\"submit\">Apply the light color</label>\n<br/>\n"
 							"<button id=\"submit\" type=\"submit\" value=\"Submit\" style=\"color: $color;\">Apply</button>\n"
 							"</form>\n"
 							"</center>\n</body>\n</html>\n");
@@ -186,36 +191,43 @@ private:
 	const char *INDEX_CSS =
 			"form {\n  background-color: #d3d3d388;\n  display: inline-block;\n  padding: 10px;\n  border-radius: 6px;\n"
 			"  border: 3px solid #d8d8d888;\n}\n"
-			"input[type=color] {\n  background-color: #d3d3d319;\n  margin: 8px;\n  border-radius: 4px;\n"
-			"  border: 1px solid #c0c0c0;\n  transition: background-color 0.2s;\n  -webkit-transition: background-color 0.2s;\n}\n"
-			"input[type=color]:focus {\n  outline: none;\n}\n"
-			"input[type=color]:hover {\n  background-color: #d3d3d399;\n}\n"
+			"hr {\n  opacity: 0.5;\n}\n"
 			"button {\n  margin: 8px;\n  padding: 8px 24px;\n  border-radius: 4px;\n  border: 3px solid #acacac;\n"
 			"  transition: opacity 0.2s;\n  -webkit-transition: opacity 0.2s;\n}\n"
 			"button:hover {\n  opacity: 0.85;\n}\n"
 			"button:active {\n  opacity: 0.7;\n}\n"
-			"input[type=range] {\n  background-color: #00000000;\n  border: none;\n  cursor: pointer;\n"
+			"input[type=color] {\n  background-color: #d3d3d326;\n  margin: 8px;\n  border-radius: 4px;\n"
+			"  border: 1px solid #c0c0c0;\n  transition: background-color 0.2s;\n"
+			"  -webkit-transition: background-color 0.2s;\n}\n"
+			"input[type=color]:focus {\n  outline: none;\n}\n"
+			"input[type=color]:hover {\n  background-color: #d3d3d399;\n}\n"
+			"input[type=number] {\n  background-color: #d3d3d399;\n  margin: 4px;\n  padding: 4px;\n  border-radius: 6px;\n"
+			"  border: 2px solid #767676;\n  transition: background-color 0.2s;\n  -webkit-transition: background-color 0.2s;\n}\n"
+			"input[type=number]:hover {\n  background-color: #d3d3d365;\n}\n"
+			"input[type=range] {\n  background-color: #00000000;\n  margin: 3px;\n  border: none;\n  cursor: pointer;\n"
 			"  -webkit-appearance: none;\n  transition: opacity 0.2s;\n  -webkit-transition: opacity 0.2s;\n}\n"
-			"input[type=range]:focus {\n  outline: none;\n}\n"
-			"input[type=range]:hover {\n  opacity: 0.8;\n}\n"
 			"input[type=range]::-webkit-slider-runnable-track {\n  border-radius: 5px;\n  height: 1rem;\n}\n"
 			"input[type=range]::-webkit-slider-thumb {\n  width: 18px;\n  height: 0.75rem;\n  border-radius: 35px;\n"
 			"  -webkit-appearance: none;\n}\n"
 			"input[type=range]::-moz-range-track {\n  border-radius: 5px;\n  height: 1rem;\n}\n"
 			"input[type=range]::-moz-range-thumb {\n  width: 18px;\n  height: 0.75rem;\n  border-radius: 35px;\n}\n"
-			"input[type=range].red::-webkit-slider-runnable-track {\n  background-color: #bf3232;\n""  border: 2px solid #a00000;\n}\n"
+			"input[type=range].red::-webkit-slider-runnable-track {\n  background-color: #bf3232;\n"
+			"  border: 2px solid #a00000;\n}\n"
 			"input[type=range].red::-webkit-slider-thumb {\n  background-color: #ff0000;\n  border: 2px solid #7f0000;\n}\n"
 			"input[type=range].red::-moz-range-track {\n  background-color: #bf3232;\n  border: 2px solid #a00000;\n}\n"
 			"input[type=range].red::-moz-range-thumb {\n  background-color: #ff0000;\n  border: 2px solid #7f0000;\n}\n"
-			"input[type=range].green::-webkit-slider-runnable-track {\n  background-color: #32bf32;\n  border: 2px solid #00a000;\n}\n"
+			"input[type=range].green::-webkit-slider-runnable-track {\n  background-color: #32bf32;\n"
+			"  border: 2px solid #00a000;\n}\n"
 			"input[type=range].green::-webkit-slider-thumb {\n  background-color: #00ff00;\n  border: 2px solid #007f00;\n}\n"
 			"input[type=range].green::-moz-range-track {\n  background-color: #32bf32;\n  border: 2px solid #00a000;\n}\n"
 			"input[type=range].green::-moz-range-thumb {\n  background-color: #00ff00;\n  border: 2px solid #007f00;\n}\n"
-			"input[type=range].blue::-webkit-slider-runnable-track {\n  background-color: #3232bf;\n  border: 2px solid #0000a0;\n}\n"
+			"input[type=range].blue::-webkit-slider-runnable-track {\n  background-color: #3232bf;\n"
+			"  border: 2px solid #0000a0;\n}\n"
 			"input[type=range].blue::-webkit-slider-thumb {\n  background-color: #0000ff;\n  border: 2px solid #00007f;\n}\n"
 			"input[type=range].blue::-moz-range-track {\n  background-color: #3232bf;\n  border: 2px solid #0000a0;\n}\n"
 			"input[type=range].blue::-moz-range-thumb {\n  background-color: #0000ff;\n  border: 2px solid #00007f;\n}\n"
-;
+			"input[type=range]:focus {\n  outline: none;\n}\n"
+			"input[type=range]:hover {\n  opacity: 0.8;\n}\n";
 
 	const char *LOGIN_CSS =
 			"form {\n  background-color: #f0f0f0;\n  border: 4px solid #d3d3d3;\n"
@@ -284,28 +296,30 @@ private:
 			"[hidden] {\n  display: none !important;\n}\n";
 
 	const char *INDEX_JS =
-			"var colorSelect\nvar redSelect\nvar greenSelect\nvar blueSelect\nvar applyButton\nvar color\nvar interval\n\n"
-			"window.onload = init\n\ninterval = window.setInterval(checkColor, 5000)\n\nfunction init() {\n"
+			"var colorSelect\nvar redSelect\nvar greenSelect\nvar blueSelect\nvar fadeSelect\nvar applyButton\nvar color\n"
+			"var interval\n\nwindow.onload = init\n\ninterval = window.setInterval(checkColor, 5000)\n\nfunction init() {\n"
 			"  colorSelect = document.color_select.color\n  redSelect = document.color_select.red\n"
 			"  greenSelect = document.color_select.green\n  blueSelect = document.color_select.blue\n"
-			"  applyButton = document.getElementById('submit')\n\n"
-			"  colorSelect.addEventListener(\"change\", onColorChange, false)\n"
-			"  redSelect.addEventListener(\"change\", onColorChange, false)\n"
-			"  greenSelect.addEventListener(\"change\", onColorChange, false)\n"
-			"  blueSelect.addEventListener(\"change\", onColorChange, false)\n\n"
-			"  color = parseInt(colorSelect.value.substring(1, 7), 16)\n  setColor(color)\n}\n\nfunction onColorChange() {\n"
-			"  window.clearInterval(interval)\n  if (this.id == \"color\") {\n"
-			"    color = parseInt(this.value.substring(1, 7), 16)\n  } else if (this.id == \"red\") {\n"
-			"    color = color & 0x00FFFF | this.value << 16\n  } else if (this.id == \"green\") {\n"
-			"    color = color & 0xFF00FF | this.value << 8\n  } else if (this.id == \"blue\") {\n"
-			"    color = color & 0xFFFF00 | this.value\n  }\n  setColor(color)\n}\n\nfunction setColor(color) {\n"
-			"  var hexColor = '#' + color.toString(16).padStart(6, '0')\n  document.body.style.backgroundColor = hexColor\n"
-			"  colorSelect.value = hexColor\n  redSelect.value = color >> 16\n  greenSelect.value = (color & 0x00FF00) >> 8\n"
+			"  fadeSelect = document.color_select.fade\n  applyButton = document.color_select.submit\n\n"
+			"  colorSelect.addEventListener('change', onColorChange, false)\n"
+			"  redSelect.addEventListener('change', onColorChange, false)\n"
+			"  greenSelect.addEventListener('change', onColorChange, false)\n"
+			"  blueSelect.addEventListener('change', onColorChange, false)\n"
+			"  fadeSelect.addEventListener('change', onChange, false)\n\n"
+			"  color = parseInt(colorSelect.value.substring(1, 7), 16)\n"
+			"  setColor(color)\n}\n\nfunction onChange() {\n  window.clearInterval(interval)\n}\n\nfunction onColorChange() {\n"
+			"  onChange();\n  if (this.id == 'color') {\n    color = parseInt(this.value.substring(1, 7), 16)\n"
+			"  } else if (this.id == 'red') {\n    color = color & 0x00FFFF | this.value << 16\n"
+			"  } else if (this.id == 'green') {\n    color = color & 0xFF00FF | this.value << 8\n"
+			"  } else if (this.id == 'blue') {\n    color = color & 0xFFFF00 | this.value\n  }\n  setColor(color)\n}\n\n"
+			"function setColor(color) {\n  var hexColor = '#' + color.toString(16).padStart(6, '0')\n"
+			"  document.body.style.backgroundColor = hexColor\n  colorSelect.value = hexColor\n"
+			"  redSelect.value = color >> 16\n  greenSelect.value = (color & 0x00FF00) >> 8\n"
 			"  blueSelect.value = color & 0x0000FF\n  applyButton.style.color = hexColor\n"
 			"  applyButton.style.backgroundColor = '#' + (color ^ 0xFFFFFF).toString(16).padStart(6, '0')\n}\n\n"
-			"function checkColor() {\n  fetch('color.json', {method: 'get'})\n  .then((res) => {\n    return res.json()\n"
-			"  })\n  .then((out) => {\n    color = out.color\n    setColor(color)\n  })\n  .catch((err) => {\n"
-			"    throw err\n  })\n}\n";
+			"function checkColor() {\n  fetch('properties.json', {method: 'get'})\n  .then((res) => {\n    return res.json()\n"
+			"  })\n  .then((out) => {\n    color = out.color\n    setColor(color)\n    fadeSelect.value = out.fade\n  })\n"
+			"  .catch((err) => {\n    throw err\n  })\n}\n";
 };
 
 #endif

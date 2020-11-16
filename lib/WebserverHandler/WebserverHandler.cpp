@@ -95,6 +95,14 @@ void WebserverHandler::init() {
 		}
 	});
 
+	server.on("/color.json", HTTP_GET, [this](AsyncWebServerRequest *request) {
+		request->redirect("/properties.json");
+	});
+
+	server.on("/fade.json", HTTP_GET, [this](AsyncWebServerRequest *request) {
+		request->redirect("/properties.json");
+	});
+
 	// html files
 	server.on("/index.html", HTTP_GET, [this](AsyncWebServerRequest *request) {
 		on_get_index(request);
@@ -151,10 +159,8 @@ void WebserverHandler::init() {
 	});
 
 	// json
-	server.on("/color.json", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		ostringstream os;
-		os << light.getColor();
-		request->send(200, "text/json", regex_replace("{\"color\": $color}", regex("\\$color"), os.str()).c_str());
+	server.on("/properties.json", HTTP_GET, [this](AsyncWebServerRequest *request) {
+		on_get_properties_json(request);
 	});
 
 	// errors
@@ -271,6 +277,11 @@ void WebserverHandler::on_get_index(AsyncWebServerRequest *request) {
 	os << light.getColor();
 	response = regex_replace(response, regex("\\$color"), os.str());
 
+	os.str("");
+	os.clear();
+	os << light.fade / 1000.0;
+	response = regex_replace(response, regex("\\$fade"), os.str());
+
 	request->send(200, "text/html", response.c_str());
 }
 
@@ -287,6 +298,19 @@ void WebserverHandler::on_post_index(AsyncWebServerRequest *request) {
 		light.setColor(color);
 	} else {
 		Serial.println("Received a post request missing the color value.");
+	}
+	if (request->hasParam("fade", true)) {
+		double fade;
+		istringstream is(request->getParam("fade", true)->value().c_str());
+		is >> fade;
+		if (fade > 10) {
+			fade = 10;
+		} else if (fade < 0) {
+			fade = 0;
+		}
+		light.fade = fade * 1000;
+	} else {
+		Serial.println("Received a post request missing the fade value.");
 	}
 	on_get_index(request);
 }
@@ -503,6 +527,16 @@ void WebserverHandler::on_post_settings(AsyncWebServerRequest *request) {
 	}
 
 	on_get_settings(request);
+}
+
+void WebserverHandler::on_get_properties_json(AsyncWebServerRequest *request) {
+	ostringstream os;
+	os << "{\"color\": ";
+	os << light.getColor();
+	os << ", \"fade\": ";
+	os << light.fade / 1000.0;
+	os << "}";
+	request->send(200, "text/json", os.str().c_str());
 }
 
 void WebserverHandler::on_not_found(AsyncWebServerRequest *request) {
