@@ -318,8 +318,9 @@ private:
 			"  blueSelect.value = color & 0x0000FF\n  applyButton.style.color = hexColor\n"
 			"  applyButton.style.backgroundColor = '#' + (color ^ 0xFFFFFF).toString(16).padStart(6, '0')\n}\n\n"
 			"function checkColor() {\n  fetch('properties.json', {method: 'get'})\n  .then((res) => {\n    return res.json()\n"
-			"  })\n  .then((out) => {\n    color = out.color\n    setColor(color)\n    fadeSelect.value = out.fade\n  })\n"
-			"  .catch((err) => {\n    throw err\n  })\n}\n";
+			"  })\n  .then((out) => {\n    color = out.color\n    setColor(color)\n    if (fade != out.fade) {\n"
+			"      fadeSelect.value = out.fade\n      fade = out.fade\n    }\n  })\n  .catch((err) => {\n    throw err\n"
+			"  })\n}\n";
 };
 
 #endif

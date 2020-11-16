@@ -5,6 +5,7 @@ var blueSelect
 var fadeSelect
 var applyButton
 var color
+var fade
 var interval
 
 window.onload = init
@@ -27,6 +28,8 @@ function init() {
 
   color = parseInt(colorSelect.value.substring(1, 7), 16)
   setColor(color)
+
+  fade = fadeSelect.value
 }
 
 function onChange() {
@@ -66,7 +69,10 @@ function checkColor() {
   .then((out) => {
     color = out.color
     setColor(color)
-    fadeSelect.value = out.fade
+    if (fade != out.fade) {
+      fadeSelect.value = out.fade
+      fade = out.fade
+    }
   })
   .catch((err) => {
     throw err
