@@ -9,25 +9,20 @@
 #define TEST_TEST_MAIN_H_
 
 #include <Arduino.h>
-#include <AsyncTCP.h>
 #include <LedHandler.h>
 #include <WebserverHandler.h>
 
-static constexpr char SSID[] = "WIFI_SSID";
-static constexpr char PASSWORD[] = "WPA_PASSPHRASE";
+static const char *SSID = "UnitTestAP";
+static const char *PASSPHRASE = "MeantForAutomatedTestsOnly";
 
-static IPAddress localhost(192, 168, 2, 120);
-static const IPAddress GATEWAY(192, 168, 2, 1);
-static const IPAddress SUBNET(255, 255, 0, 0);
-
-static constexpr char HOSTNAME[] = "lightcontrol";
-
-static const bool DEFAULT_REQUIRE_LOGIN = false;
+static IPAddress localhost;
 
 static LedHandler light;
 
-static WebserverHandler server(light, DEFAULT_REQUIRE_LOGIN);
+static WebserverHandler server(light, false);
 
-static AsyncClient *tcp_client = NULL;
+static WiFiClient tcp_client;
+
+static std::string response;
 
 #endif

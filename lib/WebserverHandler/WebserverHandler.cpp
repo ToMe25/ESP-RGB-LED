@@ -274,13 +274,40 @@ void WebserverHandler::on_get_index(AsyncWebServerRequest *request) {
 	os << setw(6);
 	os << hex;
 	os << right;
-	os << light.getColor();
+	os << light.color2;
+	response = regex_replace(response, regex("\\$color2"), os.str());
+
+	os.str("");
+	os.clear();
+	os << light.fade2 / 1000.0;
+	response = regex_replace(response, regex("\\$fade2"), os.str());
+
+	os.str("");
+	os.clear();
+	os << (light.time2 - light.fade2) / 1000.0;
+	response = regex_replace(response, regex("\\$time2"), os.str());
+
+	os.str("");
+	os.clear();
+	os << '#';
+	os.fill('0');
+	os << setw(6);
+	os << hex;
+	os << right;
+	os << light.color1;
 	response = regex_replace(response, regex("\\$color"), os.str());
 
 	os.str("");
 	os.clear();
-	os << light.fade / 1000.0;
+	os << light.fade1 / 1000.0;
 	response = regex_replace(response, regex("\\$fade"), os.str());
+
+	os.str("");
+	os.clear();
+	os << (light.time1 - light.fade1) / 1000.0;
+	response = regex_replace(response, regex("\\$time"), os.str());
+
+	response = regex_replace(response, regex("\\$dualcolor"), light.dual_color ? "" : "hidden");
 
 	request->send(200, "text/html", response.c_str());
 }
@@ -291,11 +318,9 @@ void WebserverHandler::on_post_index(AsyncWebServerRequest *request) {
 		return;
 	}
 	if (request->hasParam("color", true)) {
-		uint color;
 		istringstream is(
 				request->getParam("color", true)->value().substring(1).c_str());
-		is >> hex >> color;
-		light.setColor(color);
+		is >> hex >> light.color1;
 	} else {
 		Serial.println("Received a post request missing the color value.");
 	}
@@ -308,9 +333,60 @@ void WebserverHandler::on_post_index(AsyncWebServerRequest *request) {
 		} else if (fade < 0) {
 			fade = 0;
 		}
-		light.fade = fade * 1000;
+		light.fade1 = fade * 1000;
 	} else {
 		Serial.println("Received a post request missing the fade value.");
+	}
+	if (request->hasParam("time", true)) {
+		double time;
+		istringstream is(request->getParam("time", true)->value().c_str());
+		is >> time;
+		if (time > 100) {
+			time = 100;
+		} else if (time < 0) {
+			time = 0;
+		}
+		light.time1 = time * 1000 + light.fade1;
+	} else {
+		Serial.println("Received a post request missing the time value.");
+	}
+	if (request->hasParam("color2", true)) {
+		istringstream is(
+				request->getParam("color2", true)->value().substring(1).c_str());
+				is >> hex >> light.color2;
+	} else {
+		Serial.println("Received a post request missing the color2 value.");
+	}
+	if (request->hasParam("fade2", true)) {
+		double fade;
+		istringstream is(request->getParam("fade2", true)->value().c_str());
+		is >> fade;
+		if (fade > 10) {
+			fade = 10;
+		} else if (fade < 0) {
+			fade = 0;
+		}
+		light.fade2 = fade * 1000;
+	} else {
+		Serial.println("Received a post request missing the fade2 value.");
+	}
+	if (request->hasParam("time2", true)) {
+		double time;
+		istringstream is(request->getParam("time2", true)->value().c_str());
+		is >> time;
+		if (time > 100) {
+			time = 100;
+		} else if (time < 0) {
+			time = 0;
+		}
+		light.time2 = time * 1000 + light.fade2;
+	} else {
+		Serial.println("Received a post request missing the time2 value.");
+	}
+	if (request->hasParam("submit", true)) {
+		light.dual_color = request->getParam("submit", true)->value() == "double";
+	} else {
+		Serial.println("Received a post request missing the submit value.");
 	}
 	on_get_index(request);
 }
@@ -532,9 +608,19 @@ void WebserverHandler::on_post_settings(AsyncWebServerRequest *request) {
 void WebserverHandler::on_get_properties_json(AsyncWebServerRequest *request) {
 	ostringstream os;
 	os << "{\"color\": ";
-	os << light.getColor();
+	os << light.color1;
 	os << ", \"fade\": ";
-	os << light.fade / 1000.0;
+	os << light.fade1 / 1000.0;
+	os << ", \"time\": ";
+	os << (light.time1 - light.fade1) / 1000.0;
+	os << ", \"dual\": ";
+	os << light.dual_color;
+	os << ", \"color2\": ";
+	os << light.color2;
+	os << ", \"fade2\": ";
+	os << light.fade2 / 1000.0;
+	os << ", \"time2\": ";
+	os << (light.time2 - light.fade2) / 1000.0;
 	os << "}";
 	request->send(200, "text/json", os.str().c_str());
 }

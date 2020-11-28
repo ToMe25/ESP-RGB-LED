@@ -9,7 +9,7 @@
 #include <unity.h>
 
 void test_led_color() {
-	light.setColor(0x00ff00);
+	light.color1 = 0x00ff00;
 	light.writeColor();
 	delay(100);
 	TEST_ASSERT_EQUAL(0, ledcRead(0));
@@ -18,69 +18,85 @@ void test_led_color() {
 	TEST_ASSERT_EQUAL(0x00ff00, light.getColor());
 }
 
-void test_web_server_input() {
-	WiFi.mode(WIFI_STA);
+void initWiFi() {
+	WiFi.softAP(SSID, PASSPHRASE);
 
-	if (!WiFi.config(localhost, GATEWAY, SUBNET)) {
-		Serial.println("Configuring WiFi failed!");
-		return;
-	}
-
-	WiFi.setHostname(HOSTNAME);
-
-	WiFi.begin(SSID, PASSWORD);
-	if (WiFi.waitForConnectResult() != WL_CONNECTED) {
-		Serial.println("Establishing a WiFi connection failed!");
-		return;
-	}
-
-	WiFi.enableIpV6();
-
-	localhost = WiFi.localIP();
+	localhost = WiFi.softAPIP();
 
 	server.init();
+}
 
-	tcp_client = new AsyncClient();
+std::string request(const std::string request) {
+	response = "";
 
-	tcp_client->onError([](void * arg, AsyncClient * client, int error) {
-		Serial.println("Connection Error!");
-		tcp_client = NULL;
-		delete client;
-	}, NULL);
-
-	tcp_client->onConnect([](void * arg, AsyncClient * client) {
-		Serial.println("Connected");
-		tcp_client->onError(NULL, NULL);
-
-		client->onDisconnect([](void * arg, AsyncClient * c) {
-			Serial.println("Disconnected");
-			tcp_client = NULL;
-			delete c;
-		}, NULL);
-
-		client->onData([](void * arg, AsyncClient * c, void * data, size_t len) {
-			Serial.println("Received response.");
-			std::string website = (char*) data;
-			TEST_ASSERT_NOT_EQUAL(std::string::npos, website.find("#ff0000"));
-		}, NULL);
-
-		const std::string request =
-				"POST / HTTP/1.1\r\n"
-				"Host: localhost\r\n"
-				"Content-Type: application/x-www-form-urlencoded\r\n"
-				"Content-Length: 15\r\n\r\n"
-				"color=%23ff0000";
-
-		client->write(request.c_str());
-	}, NULL);
-
-	if (!tcp_client->connect(WiFi.localIP(), 80)) {
+	if (!tcp_client.connect(localhost, 80)) {
 		Serial.println("Connection Failed!");
+	    return response;
 	}
 
-	delay(500);
+	if (tcp_client.print(request.c_str()) > 0) {
+		while (tcp_client.connected() && tcp_client.available() == 0) {
+			delay(10);
+		}
+
+		while (tcp_client.available()) {
+			response += tcp_client.read();
+		}
+		if (tcp_client.connected()) {
+			tcp_client.stop();
+		}
+	} else {
+		tcp_client.stop();
+		Serial.println("Send Failed");
+		while (tcp_client.connected()) {
+			delay(10);
+		}
+	}
+
+	return response;
+}
+
+void test_web_server_input() {
+	const std::string requestStr = "POST /index.html HTTP/1.1\r\n"
+			"Host: localhost\r\n"
+			"Connection: close\r\n"
+			"Content-Type: application/x-www-form-urlencoded\r\n"
+			"Content-Length: 15\r\n\r\n"
+			"color=%23ff0000";
+
+	const std::string response = request(requestStr);
+
+	TEST_ASSERT_NOT_EQUAL(std::string::npos, response.find("#ff0000"));
+
 	light.writeColor();
 	TEST_ASSERT_EQUAL(0xff0000, light.getColor());
+}
+
+void test_web_server_dual_color_input() {
+	const std::string requestStr = "POST /index.html HTTP/1.1\r\n"
+			"Host: localhost\r\n"
+			"Connection: close\r\n"
+			"Content-Type: application/x-www-form-urlencoded\r\n"
+			"Content-Length: 78\r\n\r\n"
+			"color=%2300ff00&fade=1&time=3&color2=%230000ff&fade2=0.5&time2=5&submit=double";
+
+	const std::string response = request(requestStr);
+
+	TEST_ASSERT_NOT_EQUAL(std::string::npos, response.find("#00ff00"));
+	TEST_ASSERT_NOT_EQUAL(std::string::npos, response.find("#0000ff"));
+
+	light.writeColor();
+	TEST_ASSERT_EQUAL(0x00ff00, light.getColor());
+	TEST_ASSERT_EQUAL(0x00ff00, light.color1);
+	TEST_ASSERT_EQUAL(0x0000ff, light.color2);
+	TEST_ASSERT_EQUAL(1000, light.fade1);
+	TEST_ASSERT_EQUAL(500, light.fade2);
+	TEST_ASSERT_EQUAL(4000, light.time1);
+	TEST_ASSERT_EQUAL(5500, light.time2);
+
+	delay(4200);
+	light.writeColor();
+	TEST_ASSERT_EQUAL(0x0000ff, light.getColor());
 }
 
 void setup() {
@@ -90,7 +106,13 @@ void setup() {
 
 	RUN_TEST(test_led_color);
 
+	initWiFi();
+
 	RUN_TEST(test_web_server_input);
+
+	RUN_TEST(test_web_server_dual_color_input);
+
+	WiFi.softAPdisconnect(true);
 
 	UNITY_END();
 }

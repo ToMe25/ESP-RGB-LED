@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="/header.css">
 <script type="text/javascript" src="index.js"></script>
 </head>
-<body style="background-color: $color;">
+<body>
 <div class="header">
 <a class="headerelement index" href="$index">Home</a>
 <a class="headerelement settings" href="$settings" hidden>Settings</a>
@@ -15,31 +15,86 @@
 <a class="headerelement logout" href="$logout">Login</a>
 <a class="headerelement user">$user</a>
 </div>
-<center>
 <form id="color_select" name="color_select" method="post">
+<div id="selection" class="selection" style="background-color: $color;float: left;">
+<center>
+<button type="button" id="dual_color_toggle">Dual Color</button>
+<br/>
+<div class="input">
 <label for="color">Select light color</label>
 <br/>
 <input name="color" type="color" value="$color" id="color" pattern="^#([A-Fa-f0-9]{6})$" required title="Submit hex value" placeholder="#hexcolor">
 <hr/>
 Or select a color with these sliders
 <br/>
-<lable for="red">Red:</lable>
+<label for="red">Red:</label>
 <input type="range" value="127" id="red" pattern="^([0-9]{3})$" title="Submit red" min="0" max="255" placeholder="100" class="red">
 <br/>
-<lable for="green">Green:</lable>
+<label for="green">Green:</label>
 <input type="range" value="127" id="green" pattern="^([0-9]{3})$" title="Submit green" min="0" max="255" placeholder="100" class="green">
 <br/>
-<lable for="blue">Blue:</lable>
+<label for="blue">Blue:</label>
 <input type="range" value="127" id="blue" pattern="^([0-9]{3})$" title="Submit blue" min="0" max="255" placeholder="100" class="blue">
 <hr/>
-<label for="fading">How long should the light color fade<br/> from the last color to the newly selected one?</label>
+<label for="fade">How long should the light color fade<br/> from the last color to this one?</label>
 <br/>
-<input name="fade" type="number" value="$fade" id="fade" required title="Submit fading time" placeholder="2.0" min="0" max="10" step="0.1">seconds
+<input name="fade" type="number" value="$fade" id="fade" required title="Submit fading time" placeholder="0-10" min="0" max="10" step="0.1">seconds
+<div id="timer" hidden>
+<hr/>
+<label for="time">How long should this color be active<br/> before switching to the next one?</label>
+<br/>
+<input name="time" type="number" value="$time" id="time" required title="Submit time" placeholder="0-100" min="0" max="100" step="0.1">seconds
+</div>
+<div id="apply">
 <hr/>
 <label for="submit">Apply the light color</label>
 <br/>
-<button id="submit" type="submit" value="Submit" style="color: $color;">Apply</button>
-</form>
+<button id="submit" name="submit" type="submit" value="single" style="color: $color;">Apply</button>
+</div>
+</div>
+<div id="applyplaceholder" hidden>
+<br/>
+<div class="buttonspacer">
+<br/>
+</div>
+</div>
 </center>
+</div>
+<div id="selection2" class="selection" style="background-color: $color2;float: right;" $dualcolor>
+<center>
+<div class="buttonspacer">
+<br/>
+</div>
+<div class="input">
+<label for="color">Select light color</label>
+<br/>
+<input name="color2" type="color" value="$color2" id="color2" pattern="^#([A-Fa-f0-9]{6})$" required title="Submit hex value" placeholder="#hexcolor">
+<hr/>
+Or select a color with these sliders
+<br/>
+<label for="red">Red:</label>
+<input type="range" value="127" id="red2" pattern="^([0-9]{3})$" title="Submit red" min="0" max="255" placeholder="100" class="red">
+<br/>
+<label for="green">Green:</label>
+<input type="range" value="127" id="green2" pattern="^([0-9]{3})$" title="Submit green" min="0" max="255" placeholder="100" class="green">
+<br/>
+<label for="blue">Blue:</label>
+<input type="range" value="127" id="blue2" pattern="^([0-9]{3})$" title="Submit blue" min="0" max="255" placeholder="100" class="blue">
+<hr/>
+<label for="fade2">How long should the light color fade<br/> from the last color to this one?</label>
+<br/>
+<input name="fade2" type="number" value="$fade2" id="fade2" required title="Submit fading time" placeholder="0-10" min="0" max="10" step="0.1">seconds
+<hr/>
+<label for="time2">How long should this color be active<br/> before switching to the next one?</label>
+<br/>
+<input name="time2" type="number" value="$time2" id="time2" required title="Submit time" placeholder="0-100" min="0" max="100" step="0.1">seconds
+</div>
+<br/>
+<label id="submit2label" for="submit2">Apply the light color</label>
+<br/>
+<button id="submit2" name="submit" type="submit" value="double" style="color: $color2;">Apply</button>
+</center>
+</div>
+</form>
 </body>
 </html>

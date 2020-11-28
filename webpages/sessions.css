@@ -7,6 +7,7 @@ form {
   padding: 5px;
   border-radius: 4px;
   margin: 3px;
+  margin-top: 6px;
   text-align: left;
   overflow: auto;
 }
