@@ -52,7 +52,7 @@ private:
 	static const uint PORT = 80;
 
 	const char *DEFAULT_USERNAME = "admin";
-	const char *DEFAULT_PASSWORD = "test";
+	const char *DEFAULT_PASSWORD = "ADMIN_PASSWORD";
 	const char *GUEST_USERNAME = "guest";
 
 	const char *HEADER_HTML =
@@ -159,7 +159,9 @@ private:
 			"</head>\n"
 			"<body>\n<center>\n"
 			"<form method=\"post\">\n"
-			"<big>\n<b>ESP32 Led color control Login:</b>\n</big>\n<br/>\n"
+			"<big>\n"
+			"<b>ESP32 Led color control Login:</b>\n"
+			"</big>\n<br/>\n"
 			"<p class=\"error\" hidden>$error</p>\n"
 			"<label for=\"name\">Username</label>\n"
 			"<input name=\"name\" type=\"text\" id=\"name\" required placeholder=\"Username\">\n<br/>\n"
@@ -168,7 +170,19 @@ private:
 			"<button type=\"submit\" class=\"login\">Login</button>\n"
 			"<button formaction=\"/index.html\" formnovalidate type=\"submit\" class=\"back\" $back>Back</button>\n"
 			"</form>\n"
-			"</center>\n</body>\n</html>\n";
+			"</center>\n"
+			"<div class=\"cookies\">\n"
+			"<center>\n<big>\n"
+			"<b>Cookie Notice</b>\n"
+			"</big>\n</center>\n"
+			"<small>\n"
+			"This Website uses Cookies for its login system.<br/>\n"
+			"It does not use Cookies for anything else.<br/>\n"
+			"By logging in you agree to this use of Cookies.\n"
+			"</small>\n"
+			"</div>\n"
+			"<div class=\"cookies-spacer\"/>\n"
+			"</body>\n</html>\n";
 
 	const std::string SESSIONS_HTML =
 			std::string(
@@ -283,23 +297,25 @@ private:
 			"  border: 3px solid #d8d8d888;\n  margin-bottom: 6px;\n}\n"
 			".selection {\n  margin: 0px;\n  padding: 0px;\n  width: calc(100% - 4px);\n  height: calc(100% - 4px);\n"
 			"  border: 2px solid #b3b3b3;\n}\n"
-			".buttonspacer {\n  margin: 8px;\n  padding: 11px 27px;\n}\n"
-;
+			".buttonspacer {\n  margin: 8px;\n  padding: 11px 27px;\n}\n";
 
 	const char *LOGIN_CSS =
-			"form {\n  background-color: #f0f0f0;\n  border: 4px solid #d3d3d3;\n"
-			"  padding: 50px;\n  padding-top: 30px;\n  border-radius: 8px;\n  display: inline-block;\n}\n"
-			"input {\n  padding: 12px 20px;\n  margin: 8px 0;\n  display: inline-block;\n"
-			"  border: 1px solid #c0c0c0;\n  border-radius: 20px;\n  box-sizing: border-box;\n}\n"
-			"button {\n  color: #ffffff;\n  margin: 8px 6px;\n  border: none;\n  border-radius: 12px;\n"
-			"  cursor: pointer;\n  transition: all 0.2s;\n  -webkit-transition: all 0.2s;\n"
-			"  box-shadow: 4px 6px 12px 2px #888888;\n}\n"
+			"form {\n  background-color: #f0f0f0;\n  border: 4px solid #d3d3d3;\n  padding: 50px;\n  padding-top: 30px;\n"
+			"  margin-bottom: 4px;\n  border-radius: 8px;\n  display: inline-block;\n}\n"
+			"input {\n  padding: 12px 20px;\n  margin: 8px 0;\n  display: inline-block;\n  border: 1px solid #c0c0c0;\n"
+			"  border-radius: 20px;\n  box-sizing: border-box;\n}\n"
+			"input:focus {\n  outline: none;\n}\n"
+			"button {\n  color: #ffffff;\n  margin: 8px 6px;\n  border: none;\n  border-radius: 12px;\n  cursor: pointer;\n"
+			"  transition: all 0.2s;\n  -webkit-transition: all 0.2s;\n  box-shadow: 4px 6px 12px 2px #888888;\n}\n"
 			"button:hover {\n  opacity: 0.8;\n  box-shadow: none;\n}\n"
+			"button:focus {\n  outline: none;\n}\n"
 			".login {\n  background-color: #4cc550;\n  padding: 14px 80px;\n  float: right;\n}\n"
 			".back {\n  background-color: #ff3333;\n  padding: 14px 20px;\n  float: left;\n}\n"
-			".error {\n  background-color: #df3120;\n  padding: 5px;\n  text-align: center;\n"
-			"  border: 3px solid #9f0000;\n  font-size: 22pt;\n  border-radius: 8px;\n"
-			"  margin: 10px;\n}\n"
+			".error {\n  background-color: #df3120;\n  padding: 5px;\n  text-align: center;\n  border: 3px solid #9f0000;\n"
+			"  font-size: 22pt;\n  border-radius: 8px;\n  margin: 10px;\n}\n"
+			".cookies {\n  position: fixed;\n  width: calc(100% - 16px);\n  left: 0px;\n  bottom: 0px;\n"
+			"  background-color: #1010a4;\n  border: 4px solid #570000;\n  padding: 8px 4px;\n  line-height: 0.8rem;\n}\n"
+			".cookies-spacer {\n  height: calc(3.2rem + 24px);\n}\n"
 			"[hidden] {\n  display: none !important;\n}\n";
 
 	const char *SESSIONS_CSS =
@@ -309,6 +325,8 @@ private:
 			"  overflow: auto;\n}\np {\n  margin: 0.2rem;\n}\n"
 			"input[type=text] {\n  padding: 5px 20px;\n  margin: 2px;\n  display: inline-block;\n"
 			"  border: 1px solid #c0c0c0;\n  border-radius: 20px;\n  box-sizing: border-box;\n}\n"
+			"input[type=text]:focus {\n  outline: none;\n}\n"
+			"button:focus {\n  outline: none;\n}\n"
 			".main {\n  background-color: #f0f0f0;\n  border: 4px solid #d3d3d3;\n"
 			"  padding: 30px;\n  border-radius: 8px;\n}\n"
 			".delete {\n  height: calc(2.8rem - 4px);\n  margin: 0.2rem;\n  margin-left: 20px;\n"
@@ -333,7 +351,8 @@ private:
 			"  margin: 8px;\n  border: none;\n  border-radius: 12px;\n  cursor: pointer;\n"
 			"  box-shadow: 4px 6px 12px 2px #888888;\n  transition: all 0.2s;\n  -webkit-transition: all 0.2s;\n}\n"
 			"button:hover {\n  box-shadow: 2px 3px 6px 1px #888888;\n  opacity: 0.9;\n}\n"
-			"button:active {\n  opacity: 0.8;\n  box-shadow: none;\n}\n";
+			"button:active {\n  opacity: 0.8;\n  box-shadow: none;\n}\n"
+			"button:focus {\n  outline: none;\n}\n";
 
 	const char *HEADER_CSS =
 			"body {\n  padding: 0px;\n  margin: 0px;\n}\n"
