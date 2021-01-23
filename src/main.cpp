@@ -11,12 +11,14 @@ void setup() {
 	Serial.begin(115200);
 
 	WiFi.mode(WIFI_STA);
+	WiFi.disconnect(true);
 
 	if (!WiFi.config(localhost, GATEWAY, SUBNET)) {
 		Serial.println("Configuring WiFi failed!");
 		return;
 	}
 
+	WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE);
 	WiFi.setHostname(HOSTNAME);
 
 	WiFi.begin(SSID, PASSWORD);
