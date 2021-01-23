@@ -19,7 +19,7 @@ static IPAddress localhost(192, 168, 2, 120);
 static const IPAddress GATEWAY(192, 168, 2, 1);
 static const IPAddress SUBNET(255, 255, 0, 0);
 
-static constexpr char HOSTNAME[] = "lightcontrol";
+static constexpr char HOSTNAME[] = "esp-rgb-led";
 
 static const bool DEFAULT_REQUIRE_LOGIN = true;
 
