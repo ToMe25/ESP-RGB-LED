@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Temporary Sessions</title>
-<link rel="stylesheet" type="text/css" href="/sessions.css">
+<link rel="stylesheet" type="text/css" href="/main.css">
 <link rel="stylesheet" type="text/css" href="/header.css">
 </head>
 <body>
@@ -16,7 +16,7 @@
 		<a class="headerelement user">$user</a>
 	</div>
 	<!-- HEADER END -->
-	<center>
+	<div class="center">
 		<div class="main">
 			<big> <b>Temporary Logins</b>
 			</big> <br /> <small>All the temporary logins. They will be
@@ -27,19 +27,18 @@
 			</big> <br /> <small>All logins created with this function will be
 				deleted with the next restart.</small>
 			<p class="error" hidden>$error</p>
-			<form method="post">
+			<form class="sub" method="post">
 				<b>
 					<p>Login Data:</p>
 				</b> <label for="name">Username</label>
-				<input id="name" name="name"
-					placeholder="Username" required type="text"> <br />
-				<label for="password">Password</label>
-				<input id="password" name="password" placeholder="Password"
-					required type="text">
-				<br />
-				<button class="create" type="submit">Create</button>
+				<input class="lowinput" id="name" name="name"
+					placeholder="Username" required type="text">
+				<br /> <label for="password">Password</label>
+				<input class="lowinput" id="password" name="password"
+					placeholder="Password" required type="text"> <br />
+				<button class="bluebtn" type="submit">Create</button>
 			</form>
 		</div>
-	</center>
+	</div>
 </body>
 </html>

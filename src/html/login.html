@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <title>Login</title>
-<link rel="stylesheet" type="text/css" href="/login.css">
+<link rel="stylesheet" type="text/css" href="/main.css">
 </head>
 <body>
-	<center>
-		<form method="post">
+	<div class="center">
+		<form method="post" class="main">
 			<big> <b>ESP32 Led color control Login:</b>
 			</big> <br />
 			<p class="error" hidden>$error</p>
@@ -16,21 +16,21 @@
 				id="name" required placeholder="Username"> <br />
 			<label for="name">Password</label> <input name="pwd" type="password"
 				id="pwd" required placeholder="Password"> <br />
-			<button type="submit" class="login">Login</button>
+			<button type="submit" class="greenbtn right">Login</button>
 			<button formaction="/index.html" formnovalidate type="submit"
-				class="back" $back>Back</button>
+				class="redbtn left" $back>Back</button>
 		</form>
-	</center>
+	</div>
 	<div class="cookies">
-		<center>
+		<div class="center">
 			<big> <b>Cookie Notice</b>
 			</big>
-		</center>
+		</div>
 		<small> This Website uses Cookies for its login system.<br />
 			It does not use Cookies for anything else.<br /> By logging in you
 			agree to this use of Cookies.
 		</small>
 	</div>
-	<div class="cookies-spacer" />
+	<div class="cookies-spacer"></div>
 </body>
 </html>

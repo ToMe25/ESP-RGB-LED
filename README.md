@@ -25,6 +25,6 @@ The screen for the creation and deletion of logins:<br>
 1. Clone this repository. For example with `git clone https://www.github.com/ToMe25/ESP-RGB-LED.git/`.
 2. Install [PlatformIO](https://docs.platformio.org/en/latest/core/installation.html).
 3. Attach your ESP32 to the PC.
-4. Replace `WIFI_SSID` and `WPA_PASSPHRASE` in [src/main.h](https://github.com/ToMe25/ESP-RGB-LED/blob/master/src/main.h) with your WLAN credentials.
+4. Add a `wifissid.txt` and `wifipass.txt` file containing your wifi ssid and passphrase. Make sure they does not end with an empty line!
 5. Replace `ADMIN_PASSWORD` in [lib/WebserverHandler/WebserverHandler.h](https://github.com/ToMe25/ESP-RGB-LED/blob/master/lib/WebserverHandler/WebserverHandler.h) with the password for the default/administation user.
 6. Build and upload ESP-RGB-LED to the ESP32 using `pio run --target upload`

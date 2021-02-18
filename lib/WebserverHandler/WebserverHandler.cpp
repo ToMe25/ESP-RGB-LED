@@ -171,17 +171,9 @@ void WebserverHandler::init() {
 	server.on("/index.css", HTTP_GET, [this](AsyncWebServerRequest *request) {
 		request->send(200, "text/css", INDEX_CSS);
 	});
-	server.on("/login.css", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		request->send(200, "text/css", LOGIN_CSS);
+	server.on("/main.css", HTTP_GET, [this](AsyncWebServerRequest *request) {
+		request->send(200, "text/css", MAIN_CSS);
 	});
-	server.on("/sessions.css", HTTP_GET,
-			[this](AsyncWebServerRequest *request) {
-				request->send(200, "text/css", SESSIONS_CSS);
-			});
-	server.on("/settings.css", HTTP_GET,
-			[this](AsyncWebServerRequest *request) {
-				request->send(200, "text/css", SETTINGS_CSS);
-			});
 
 	// javascript
 	server.on("/index.js", HTTP_GET, [this](AsyncWebServerRequest *request) {
@@ -574,7 +566,7 @@ void WebserverHandler::on_post_sessions(AsyncWebServerRequest *request) {
 						login.first);
 				session_entry = regex_replace(session_entry,
 						regex("\\$password"), login.second);
-				response = regex_replace(response, regex("<!--SESSIONS-->"),
+				response = regex_replace(response, regex("<!-- SESSIONS END -->"),
 						session_entry);
 			}
 		}
@@ -600,7 +592,6 @@ void WebserverHandler::on_get_settings(AsyncWebServerRequest *request) {
 	if (session.first == DEFAULT_USERNAME) {
 		string response = finish_header(SETTINGS_HTML, session.first,
 				session.second);
-		;
 
 		response = regex_replace(response, regex("\\$require_login"),
 				require_login ? "checked" : "");
