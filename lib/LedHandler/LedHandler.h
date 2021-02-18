@@ -9,7 +9,6 @@
 #define LIB_LEDHANDLER_LEDHANDLER_H_
 
 #include <Arduino.h>
-#include <chrono>
 
 class LedHandler {
 public:

@@ -19,10 +19,11 @@ extern const char NOT_FOUND_HTML[] asm("_binary_src_html_not_found_html_start");
 extern const char SESSIONS_SESSION_HTML[] asm("_binary_src_html_sessions_session_html_start");
 extern const char SESSIONS_HTML[] asm("_binary_src_html_sessions_html_start");
 extern const char SETTINGS_HTML[] asm("_binary_src_html_settings_html_start");
-extern const char INDEX_JS[] asm("_binary_src_html_index_js_start");
 extern const char HEADER_CSS[] asm("_binary_src_html_css_header_css_start");
 extern const char INDEX_CSS[] asm("_binary_src_html_css_index_css_start");
 extern const char MAIN_CSS[] asm("_binary_src_html_css_main_css_start");
+extern const char INDEX_JS[] asm("_binary_src_html_index_js_start");
+extern const char PROPERTIES_JSON[] asm("_binary_src_html_properties_json_start");
 
 class WebserverHandler {
 public:

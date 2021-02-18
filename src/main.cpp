@@ -37,7 +37,6 @@ void setup() {
 }
 
 void loop() {
-	Serial.println(WIFI_SSID);
 	light.writeColor();
 	delay(100);
 }

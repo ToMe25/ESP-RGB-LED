@@ -1,0 +1,9 @@
+{
+	"color": %d,
+	"fade": %f,
+	"time": %f,
+	"dual": %s,
+	"color2": %d,
+	"fade2": %f,
+	"time2": %f
+}

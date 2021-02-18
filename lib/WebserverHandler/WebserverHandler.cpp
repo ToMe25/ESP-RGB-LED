@@ -630,23 +630,16 @@ void WebserverHandler::on_post_settings(AsyncWebServerRequest *request) {
 }
 
 void WebserverHandler::on_get_properties_json(AsyncWebServerRequest *request) {
-	ostringstream os;
-	os << "{\"color\": ";
-	os << light.color1;
-	os << ", \"fade\": ";
-	os << light.fade1 / 1000.0;
-	os << ", \"time\": ";
-	os << (light.time1 - light.fade1) / 1000.0;
-	os << ", \"dual\": ";
-	os << light.dual_color;
-	os << ", \"color2\": ";
-	os << light.color2;
-	os << ", \"fade2\": ";
-	os << light.fade2 / 1000.0;
-	os << ", \"time2\": ";
-	os << (light.time2 - light.fade2) / 1000.0;
-	os << "}";
-	request->send(200, "text/json", os.str().c_str());
+	uint size = snprintf(nullptr, 0, PROPERTIES_JSON, light.color1,
+			light.fade1 / 1000.0, light.time1 / 1000.0,
+			(light.dual_color ? "true" : "false"), light.color2,
+			light.fade2 / 1000.0, light.time2 / 1000.0) + 1;
+	char *response = new char[size];
+	snprintf(response, size, PROPERTIES_JSON, light.color1,
+			light.fade1 / 1000.0, light.time1 / 1000.0,
+			(light.dual_color ? "true" : "false"), light.color2,
+			light.fade2 / 1000.0, light.time2 / 1000.0);
+	request->send(200, "text/json", response);
 }
 
 void WebserverHandler::on_not_found(AsyncWebServerRequest *request) {
