@@ -14,7 +14,7 @@ The color selection screen in dual color mode:<br/>
 ![Esp32_Led_dual_color_control](https://raw.githubusercontent.com/ToMe25/ESP-RGB-LED/master/images/Esp32_Led_dual_color_control.png)
 The color selection screen as a normal user(single color):<br/>
 ![Esp32_Led_temp_session_color_control](https://raw.githubusercontent.com/ToMe25/ESP-RGB-LED/master/images/Esp32_Led_temp_session_color_control.png)
-The login page(with login not required):<br>
+The login page:<br>
 ![Login](https://raw.githubusercontent.com/ToMe25/ESP-RGB-LED/master/images/Login.png)
 The admin settings page(can disable the login requirement):<br/>
 ![Settings](https://raw.githubusercontent.com/ToMe25/ESP-RGB-LED/master/images/Settings.png)
