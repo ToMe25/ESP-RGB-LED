@@ -1,0 +1,92 @@
+div {
+	display: inline-block;
+}
+
+form {
+	background-color: #f8f8f8;
+	border: 1px solid #000000;
+	padding: 5px;
+	border-radius: 4px;
+	margin: 3px;
+	margin-top: 6px;
+	text-align: left;
+	overflow: auto;
+}
+
+p {
+	margin: 0.2rem;
+}
+
+input[type=text] {
+	padding: 5px 20px;
+	margin: 2px;
+	display: inline-block;
+	border: 1px solid #c0c0c0;
+	border-radius: 20px;
+	box-sizing: border-box;
+}
+
+input[type=text]:focus {
+	outline: none;
+}
+
+button:focus {
+	outline: none;
+}
+
+.main {
+	background-color: #f0f0f0;
+	border: 4px solid #d3d3d3;
+	padding: 30px;
+	border-radius: 8px;
+}
+
+.delete {
+	height: calc(2.8rem - 4px);
+	margin: 0.2rem;
+	margin-left: 20px;
+	background-color: #d53445;
+	border-radius: 6px;
+	float: right;
+	border: 2px solid #f04052;
+	transition: all 0.2s;
+	-webkit-transition: all 0.2s;
+}
+
+.delete:hover {
+	background-color: #ff2210;
+	border-color: #d53545;
+}
+
+.create {
+	background-color: #0088ff;
+	color: #ffffff;
+	padding: 14px 100px;
+	margin: 8px;
+	border: none;
+	border-radius: 12px;
+	cursor: pointer;
+	box-shadow: 4px 6px 12px 2px #888888;
+	transition: all 0.2s;
+	-webkit-transition: all 0.2s;
+}
+
+.create:hover {
+	opacity: 0.9;
+	box-shadow: 2px 3px 6px 1px #888888;
+}
+
+.create:active {
+	opacity: 0.8;
+	box-shadow: none;
+}
+
+.error {
+	background-color: #df3120;
+	padding: 5px;
+	text-align: center;
+	border: 3px solid #9f0000;
+	font-size: 22pt;
+	border-radius: 8px;
+	margin: 10px;
+}
