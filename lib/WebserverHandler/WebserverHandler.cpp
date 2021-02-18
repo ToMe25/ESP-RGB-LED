@@ -25,34 +25,46 @@ WebserverHandler::~WebserverHandler() {
 void WebserverHandler::init() {
 
 	// legacy redirects
-	server.on("/", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		if (request->hasParam("s")) {
-			request->redirect(string("/index.html?s=").append(request->getParam("s")->value().c_str()).c_str());
-		} else {
-			request->redirect("/index.html");
-		}
-	});
-	server.on("/", HTTP_POST, [this](AsyncWebServerRequest *request) {
-		if (request->hasParam("s")) {
-			request->redirect(string("/index.html?s=").append(request->getParam("s")->value().c_str()).c_str());
-		} else {
-			request->redirect("/index.html");
-		}
-	});
-	server.on("/index", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		if (request->hasParam("s")) {
-			request->redirect(string("/index.html?s=").append(request->getParam("s")->value().c_str()).c_str());
-		} else {
-			request->redirect("/index.html");
-		}
-	});
-	server.on("/index", HTTP_POST, [this](AsyncWebServerRequest *request) {
-		if (request->hasParam("s")) {
-			request->redirect(string("/index.html?s=").append(request->getParam("s")->value().c_str()).c_str());
-		} else {
-			request->redirect("/index.html");
-		}
-	});
+	server.on("/", HTTP_GET,
+			[this](AsyncWebServerRequest *request) {
+				if (request->hasParam("s")) {
+					request->redirect(
+							string("/index.html?s=").append(
+									request->getParam("s")->value().c_str()).c_str());
+				} else {
+					request->redirect("/index.html");
+				}
+			});
+	server.on("/", HTTP_POST,
+			[this](AsyncWebServerRequest *request) {
+				if (request->hasParam("s")) {
+					request->redirect(
+							string("/index.html?s=").append(
+									request->getParam("s")->value().c_str()).c_str());
+				} else {
+					request->redirect("/index.html");
+				}
+			});
+	server.on("/index", HTTP_GET,
+			[this](AsyncWebServerRequest *request) {
+				if (request->hasParam("s")) {
+					request->redirect(
+							string("/index.html?s=").append(
+									request->getParam("s")->value().c_str()).c_str());
+				} else {
+					request->redirect("/index.html");
+				}
+			});
+	server.on("/index", HTTP_POST,
+			[this](AsyncWebServerRequest *request) {
+				if (request->hasParam("s")) {
+					request->redirect(
+							string("/index.html?s=").append(
+									request->getParam("s")->value().c_str()).c_str());
+				} else {
+					request->redirect("/index.html");
+				}
+			});
 
 	server.on("/login", HTTP_GET, [this](AsyncWebServerRequest *request) {
 		request->redirect("/login.html");
@@ -65,35 +77,47 @@ void WebserverHandler::init() {
 		request->redirect("/logout.html");
 	});
 
-	server.on("/sessions", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		if (request->hasParam("s")) {
-			request->redirect(string("/sessions.html?s=").append(request->getParam("s")->value().c_str()).c_str());
-		} else {
-			request->redirect("/sessions.html");
-		}
-	});
-	server.on("/sessions", HTTP_POST, [this](AsyncWebServerRequest *request) {
-		if (request->hasParam("s")) {
-			request->redirect(string("/sessions.html?s=").append(request->getParam("s")->value().c_str()).c_str());
-		} else {
-			request->redirect("/sessions.html");
-		}
-	});
+	server.on("/sessions", HTTP_GET,
+			[this](AsyncWebServerRequest *request) {
+				if (request->hasParam("s")) {
+					request->redirect(
+							string("/sessions.html?s=").append(
+									request->getParam("s")->value().c_str()).c_str());
+				} else {
+					request->redirect("/sessions.html");
+				}
+			});
+	server.on("/sessions", HTTP_POST,
+			[this](AsyncWebServerRequest *request) {
+				if (request->hasParam("s")) {
+					request->redirect(
+							string("/sessions.html?s=").append(
+									request->getParam("s")->value().c_str()).c_str());
+				} else {
+					request->redirect("/sessions.html");
+				}
+			});
 
-	server.on("/settings", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		if (request->hasParam("s")) {
-			request->redirect(string("/settings.html?s=").append(request->getParam("s")->value().c_str()).c_str());
-		} else {
-			request->redirect("/settings.html");
-		}
-	});
-	server.on("/settings", HTTP_POST, [this](AsyncWebServerRequest *request) {
-		if (request->hasParam("s")) {
-			request->redirect(string("/settings.html?s=").append(request->getParam("s")->value().c_str()).c_str());
-		} else {
-			request->redirect("/settings.html");
-		}
-	});
+	server.on("/settings", HTTP_GET,
+			[this](AsyncWebServerRequest *request) {
+				if (request->hasParam("s")) {
+					request->redirect(
+							string("/settings.html?s=").append(
+									request->getParam("s")->value().c_str()).c_str());
+				} else {
+					request->redirect("/settings.html");
+				}
+			});
+	server.on("/settings", HTTP_POST,
+			[this](AsyncWebServerRequest *request) {
+				if (request->hasParam("s")) {
+					request->redirect(
+							string("/settings.html?s=").append(
+									request->getParam("s")->value().c_str()).c_str());
+				} else {
+					request->redirect("/settings.html");
+				}
+			});
 
 	server.on("/color.json", HTTP_GET, [this](AsyncWebServerRequest *request) {
 		request->redirect("/properties.json");
@@ -122,19 +146,23 @@ void WebserverHandler::init() {
 		on_get_logout(request);
 	});
 
-	server.on("/sessions.html", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		on_get_sessions(request);
-	});
-	server.on("/sessions.html", HTTP_POST, [this](AsyncWebServerRequest *request) {
-		on_post_sessions(request);
-	});
+	server.on("/sessions.html", HTTP_GET,
+			[this](AsyncWebServerRequest *request) {
+				on_get_sessions(request);
+			});
+	server.on("/sessions.html", HTTP_POST,
+			[this](AsyncWebServerRequest *request) {
+				on_post_sessions(request);
+			});
 
-	server.on("/settings.html", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		on_get_settings(request);
-	});
-	server.on("/settings.html", HTTP_POST, [this](AsyncWebServerRequest *request) {
-		on_post_settings(request);
-	});
+	server.on("/settings.html", HTTP_GET,
+			[this](AsyncWebServerRequest *request) {
+				on_get_settings(request);
+			});
+	server.on("/settings.html", HTTP_POST,
+			[this](AsyncWebServerRequest *request) {
+				on_post_settings(request);
+			});
 
 	// stylesheets
 	server.on("/header.css", HTTP_GET, [this](AsyncWebServerRequest *request) {
@@ -146,12 +174,14 @@ void WebserverHandler::init() {
 	server.on("/login.css", HTTP_GET, [this](AsyncWebServerRequest *request) {
 		request->send(200, "text/css", LOGIN_CSS);
 	});
-	server.on("/sessions.css", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		request->send(200, "text/css", SESSIONS_CSS);
-	});
-	server.on("/settings.css", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		request->send(200, "text/css", SETTINGS_CSS);
-	});
+	server.on("/sessions.css", HTTP_GET,
+			[this](AsyncWebServerRequest *request) {
+				request->send(200, "text/css", SESSIONS_CSS);
+			});
+	server.on("/settings.css", HTTP_GET,
+			[this](AsyncWebServerRequest *request) {
+				request->send(200, "text/css", SETTINGS_CSS);
+			});
 
 	// javascript
 	server.on("/index.js", HTTP_GET, [this](AsyncWebServerRequest *request) {
@@ -159,9 +189,10 @@ void WebserverHandler::init() {
 	});
 
 	// json
-	server.on("/properties.json", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		on_get_properties_json(request);
-	});
+	server.on("/properties.json", HTTP_GET,
+			[this](AsyncWebServerRequest *request) {
+				on_get_properties_json(request);
+			});
 
 	// errors
 	server.onNotFound([this](AsyncWebServerRequest *request) {
@@ -307,7 +338,8 @@ void WebserverHandler::on_get_index(AsyncWebServerRequest *request) {
 	os << (light.time1 - light.fade1) / 1000.0;
 	response = regex_replace(response, regex("\\$time"), os.str());
 
-	response = regex_replace(response, regex("\\$dualcolor"), light.dual_color ? "" : "hidden");
+	response = regex_replace(response, regex("\\$dualcolor"),
+			light.dual_color ? "" : "hidden");
 
 	request->send(200, "text/html", response.c_str());
 }
@@ -353,7 +385,7 @@ void WebserverHandler::on_post_index(AsyncWebServerRequest *request) {
 	if (request->hasParam("color2", true)) {
 		istringstream is(
 				request->getParam("color2", true)->value().substring(1).c_str());
-				is >> hex >> light.color2;
+		is >> hex >> light.color2;
 	} else {
 		Serial.println("Received a post request missing the color2 value.");
 	}
@@ -384,7 +416,8 @@ void WebserverHandler::on_post_index(AsyncWebServerRequest *request) {
 		Serial.println("Received a post request missing the time2 value.");
 	}
 	if (request->hasParam("submit", true)) {
-		light.dual_color = request->getParam("submit", true)->value() == "double";
+		light.dual_color = request->getParam("submit", true)->value()
+				== "double";
 	} else {
 		Serial.println("Received a post request missing the submit value.");
 	}
@@ -468,8 +501,8 @@ void WebserverHandler::on_get_sessions(AsyncWebServerRequest *request) {
 						login.first);
 				session_entry = regex_replace(session_entry,
 						regex("\\$password"), login.second);
-				response = regex_replace(response, regex("<!--SESSIONS-->"),
-						session_entry);
+				response = regex_replace(response,
+						regex("<!-- SESSIONS END -->"), session_entry);
 			}
 		}
 

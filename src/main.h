@@ -12,8 +12,12 @@
 #include <LedHandler.h>
 #include <WebserverHandler.h>
 
-static constexpr char SSID[] = "WIFI_SSID";
-static constexpr char PASSWORD[] = "WPA_PASSPHRASE";
+// includes the content of the file "wifissid.txt" in the project root.
+// Make sure this file doesn't end with an empty line.
+extern const char WIFI_SSID[] asm("_binary_wifissid_txt_start");
+// includes the content of the file "wifipass.txt" in the project root.
+// Make sure this file doesn't end with an empty line.
+extern const char WIFI_PASS[] asm("_binary_wifipass_txt_start");
 
 static IPAddress localhost(192, 168, 2, 120);
 static const IPAddress GATEWAY(192, 168, 2, 1);
