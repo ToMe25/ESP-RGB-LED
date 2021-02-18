@@ -36,7 +36,7 @@ private:
 
 	bool last_dual_color = false;
 
-	std::chrono::steady_clock::time_point last_color_change;
+	uint64_t last_color_change = 0;
 
 	void setColor(uint new_color, uint16_t fade);
 

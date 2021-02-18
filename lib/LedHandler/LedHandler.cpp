@@ -8,8 +8,6 @@
 #include "LedHandler.h"
 #include "driver/ledc.h"
 
-using namespace std::chrono;
-
 LedHandler::LedHandler() {
 	rgb[0] = (color >> 16);
 	rgb[1] = (color >> 8);
@@ -55,21 +53,21 @@ void LedHandler::writeColor() {
 	if (color != color1 && (!dual_color || color != color2)) {
 		setColor(color1, fade1);
 		if (dual_color) {
-			last_color_change = steady_clock::now();
+			last_color_change = millis();
 			last_dual_color = true;
 		}
 	} else if (dual_color) {
-		steady_clock::time_point now = steady_clock::now();
+		uint64_t now = millis();
 
 		if (!last_dual_color) {
 			last_color_change = now;
 			last_dual_color = true;
 		}
 
-		if (color == color1 && duration_cast<milliseconds>(now - last_color_change).count() > time1) {
+		if (color == color1 && now - last_color_change > time1) {
 			setColor(color2, fade2);
 			last_color_change = now;
-		} else if (color == color2 && duration_cast<milliseconds>(now - last_color_change).count() > time2) {
+		} else if (color == color2 && now - last_color_change > time2) {
 			setColor(color1, fade1);
 			last_color_change = now;
 		}
