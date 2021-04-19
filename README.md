@@ -18,13 +18,15 @@ The login page:<br>
 ![Login](https://raw.githubusercontent.com/ToMe25/ESP-RGB-LED/master/images/Login.png)
 The admin settings page(can disable the login requirement):<br/>
 ![Settings](https://raw.githubusercontent.com/ToMe25/ESP-RGB-LED/master/images/Settings.png)
-The screen for the creation and deletion of logins:<br>
+The screen for the creation and deletion of logins:<br/>
 ![Temporary_Sessions](https://raw.githubusercontent.com/ToMe25/ESP-RGB-LED/master/images/Temporary_Sessions.png)
 
-## Installation
-1. Clone this repository. For example with `git clone https://www.github.com/ToMe25/ESP-RGB-LED.git/`.
-2. Install [PlatformIO](https://docs.platformio.org/en/latest/core/installation.html).
-3. Attach your ESP32 to the PC.
-4. Add a `wifissid.txt` and `wifipass.txt` file containing your wifi ssid and passphrase. Make sure they does not end with an empty line!
-5. Replace `ADMIN_PASSWORD` in [lib/WebserverHandler/WebserverHandler.h](https://github.com/ToMe25/ESP-RGB-LED/blob/master/lib/WebserverHandler/WebserverHandler.h) with the password for the default/administation user.
-6. Build and upload ESP-RGB-LED to the ESP32 using `pio run --target upload`
+## Setup and Installation
+1. Install [PlatformIO](https://docs.platformio.org/en/latest/core/installation.html).
+2. Clone this repository. For example with `git clone https://www.github.com/ToMe25/ESP-RGB-LED.git/`.
+3. Connect the LED(rgb, common cathode) to the ESP32 like this:<br/>
+![Circuit](https://raw.githubusercontent.com/ToMe25/ESP-RGB-LED/master/images/Circuit.png)
+4. Attach your ESP32 to the PC.
+5. Add a `wifissid.txt` and `wifipass.txt` file containing your wifi ssid and passphrase. Make sure they does not end with an empty line!
+6. Replace `ADMIN_PASSWORD` in [lib/WebserverHandler/WebserverHandler.h](https://github.com/ToMe25/ESP-RGB-LED/blob/master/lib/WebserverHandler/WebserverHandler.h) with the password for the default/administation user.
+7. Build and upload ESP-RGB-LED to the ESP32 using `pio run --target upload`
