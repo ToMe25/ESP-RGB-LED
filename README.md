@@ -26,7 +26,7 @@ The screen for the creation and deletion of logins:<br/>
 2. Clone this repository. For example with `git clone https://www.github.com/ToMe25/ESP-RGB-LED.git/`.
 3. Connect the LED(rgb, common cathode) to the ESP32 like this:<br/>
 ![Circuit](https://raw.githubusercontent.com/ToMe25/ESP-RGB-LED/master/images/Circuit.png)
-4. Attach your ESP32 to the PC.
-5. Add a `wifissid.txt` and `wifipass.txt` file containing your wifi ssid and passphrase. Make sure they does not end with an empty line!
+4. Attach the ESP32 to your PC.
+5. Add a `wifissid.txt` and `wifipass.txt` file containing your wifi ssid and passphrase. Make sure they do not end with an empty line!
 6. Replace `ADMIN_PASSWORD` in [lib/WebserverHandler/WebserverHandler.h](https://github.com/ToMe25/ESP-RGB-LED/blob/master/lib/WebserverHandler/WebserverHandler.h) with the password for the default/administation user.
 7. Build and upload ESP-RGB-LED to the ESP32 using `pio run --target upload`
