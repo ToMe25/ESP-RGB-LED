@@ -28,7 +28,7 @@ using namespace std;
 WebserverHandler::WebserverHandler(LedHandler &led_handler,
 		bool default_require_login) :
 		light(led_handler), require_login(default_require_login) {
-	login_data[DEFAULT_USERNAME] = DEFAULT_PASSWORD;
+	login_data[DEFAULT_USERNAME] = ADMIN_PASSWORD;
 }
 
 WebserverHandler::~WebserverHandler() {
@@ -652,7 +652,7 @@ void WebserverHandler::on_get_properties_json(AsyncWebServerRequest *request) {
 			light.fade1 / 1000.0, light.time1 / 1000.0,
 			(light.dual_color ? "true" : "false"), light.color2,
 			light.fade2 / 1000.0, light.time2 / 1000.0);
-	request->send(200, "text/json", response);
+	request->send(200, "application/json", response);
 }
 
 void WebserverHandler::on_not_found(AsyncWebServerRequest *request) {

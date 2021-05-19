@@ -37,6 +37,9 @@ extern const char INDEX_CSS[] asm("_binary_src_html_css_index_css_start");
 extern const char MAIN_CSS[] asm("_binary_src_html_css_main_css_start");
 extern const char INDEX_JS[] asm("_binary_src_html_index_js_start");
 extern const char PROPERTIES_JSON[] asm("_binary_src_html_properties_json_start");
+// includes the content of the file "adminpass.txt" in the project root.
+// Make sure this file doesn't end with an empty line.
+extern const char ADMIN_PASSWORD[] asm("_binary_adminpass_txt_start");
 
 class WebserverHandler {
 public:
@@ -77,7 +80,7 @@ private:
 	static const uint PORT = 80;
 
 	const char *DEFAULT_USERNAME = "admin";
-	const char *DEFAULT_PASSWORD = "ADMIN_PASSWORD";
+
 	const char *GUEST_USERNAME = "guest";
 };
 

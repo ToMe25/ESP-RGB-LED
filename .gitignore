@@ -9,6 +9,7 @@
 # NetBeans
 nbproject/
 
-# Wifi credentials
+# Credentials
 wifissid.txt
 wifipass.txt
+adminpass.txt
