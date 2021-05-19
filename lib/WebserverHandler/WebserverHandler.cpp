@@ -24,6 +24,7 @@
 #include <uuid.h>
 
 using namespace std;
+using namespace std::placeholders;
 
 WebserverHandler::WebserverHandler(LedHandler &led_handler,
 		bool default_require_login) :
@@ -36,172 +37,66 @@ WebserverHandler::~WebserverHandler() {
 }
 
 void WebserverHandler::init() {
+	// register legacy redirects
+	register_redirect("/", "/index.html");
+	register_redirect("/index", "/index.html");
+	register_redirect("/login", "/login.html");
+	register_redirect("/logout", "/logout.html");
+	register_redirect("/sessions", "/sessions.html");
+	register_redirect("/settings", "/settings.html");
+	register_redirect("/color.json", "/properties.json");
+	register_redirect("/fade.json", "/properties.json");
 
-	// legacy redirects
-	server.on("/", HTTP_GET,
-			[this](AsyncWebServerRequest *request) {
-				if (request->hasParam("s")) {
-					request->redirect(
-							string("/index.html?s=").append(
-									request->getParam("s")->value().c_str()).c_str());
-				} else {
-					request->redirect("/index.html");
-				}
-			});
-	server.on("/", HTTP_POST,
-			[this](AsyncWebServerRequest *request) {
-				if (request->hasParam("s")) {
-					request->redirect(
-							string("/index.html?s=").append(
-									request->getParam("s")->value().c_str()).c_str());
-				} else {
-					request->redirect("/index.html");
-				}
-			});
-	server.on("/index", HTTP_GET,
-			[this](AsyncWebServerRequest *request) {
-				if (request->hasParam("s")) {
-					request->redirect(
-							string("/index.html?s=").append(
-									request->getParam("s")->value().c_str()).c_str());
-				} else {
-					request->redirect("/index.html");
-				}
-			});
-	server.on("/index", HTTP_POST,
-			[this](AsyncWebServerRequest *request) {
-				if (request->hasParam("s")) {
-					request->redirect(
-							string("/index.html?s=").append(
-									request->getParam("s")->value().c_str()).c_str());
-				} else {
-					request->redirect("/index.html");
-				}
-			});
+	// register dynamic pages
+	register_url_callback(HTTP_GET, "/index.html",
+			bind(&WebserverHandler::on_get_index, this, _1));
 
-	server.on("/login", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		request->redirect("/login.html");
-	});
-	server.on("/login", HTTP_POST, [this](AsyncWebServerRequest *request) {
-		request->redirect("/login.html");
+	register_url_callback(HTTP_POST, "/index.html",
+			bind(&WebserverHandler::on_post_index, this, _1));
+
+	register_url_callback(HTTP_GET, "/login.html",
+			bind(&WebserverHandler::on_get_login, this, _1));
+
+	register_url_callback(HTTP_POST, "/login.html",
+			bind(&WebserverHandler::on_post_login, this, _1));
+
+	register_url_callback(HTTP_GET, "/logout.html",
+			bind(&WebserverHandler::on_get_logout, this, _1));
+
+	register_url_callback(HTTP_GET, "/sessions.html",
+			bind(&WebserverHandler::on_get_sessions, this, _1));
+
+	register_url_callback(HTTP_POST, "/sessions.html",
+			bind(&WebserverHandler::on_post_sessions, this, _1));
+
+	register_url_callback(HTTP_GET, "/settings.html",
+			bind(&WebserverHandler::on_get_settings, this, _1));
+
+	register_url_callback(HTTP_POST, "/settings.html",
+			bind(&WebserverHandler::on_post_settings, this, _1));
+
+	register_url_callback(HTTP_GET, "/properties.json",
+			bind(&WebserverHandler::on_get_properties_json, this, _1));
+
+	server.onNotFound([this](AsyncWebServerRequest *request) {
+		on_not_found(request);
 	});
 
-	server.on("/logout", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		request->redirect("/logout.html");
-	});
-
-	server.on("/sessions", HTTP_GET,
-			[this](AsyncWebServerRequest *request) {
-				if (request->hasParam("s")) {
-					request->redirect(
-							string("/sessions.html?s=").append(
-									request->getParam("s")->value().c_str()).c_str());
-				} else {
-					request->redirect("/sessions.html");
-				}
-			});
-	server.on("/sessions", HTTP_POST,
-			[this](AsyncWebServerRequest *request) {
-				if (request->hasParam("s")) {
-					request->redirect(
-							string("/sessions.html?s=").append(
-									request->getParam("s")->value().c_str()).c_str());
-				} else {
-					request->redirect("/sessions.html");
-				}
-			});
-
-	server.on("/settings", HTTP_GET,
-			[this](AsyncWebServerRequest *request) {
-				if (request->hasParam("s")) {
-					request->redirect(
-							string("/settings.html?s=").append(
-									request->getParam("s")->value().c_str()).c_str());
-				} else {
-					request->redirect("/settings.html");
-				}
-			});
-	server.on("/settings", HTTP_POST,
-			[this](AsyncWebServerRequest *request) {
-				if (request->hasParam("s")) {
-					request->redirect(
-							string("/settings.html?s=").append(
-									request->getParam("s")->value().c_str()).c_str());
-				} else {
-					request->redirect("/settings.html");
-				}
-			});
-
-	server.on("/color.json", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		request->redirect("/properties.json");
-	});
-
-	server.on("/fade.json", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		request->redirect("/properties.json");
-	});
-
-	// html files
-	server.on("/index.html", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		on_get_index(request);
-	});
-	server.on("/index.html", HTTP_POST, [this](AsyncWebServerRequest *request) {
-		on_post_index(request);
-	});
-
-	server.on("/login.html", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		on_get_login(request);
-	});
-	server.on("/login.html", HTTP_POST, [this](AsyncWebServerRequest *request) {
-		on_post_login(request);
-	});
-
-	server.on("/logout.html", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		on_get_logout(request);
-	});
-
-	server.on("/sessions.html", HTTP_GET,
-			[this](AsyncWebServerRequest *request) {
-				on_get_sessions(request);
-			});
-	server.on("/sessions.html", HTTP_POST,
-			[this](AsyncWebServerRequest *request) {
-				on_post_sessions(request);
-			});
-
-	server.on("/settings.html", HTTP_GET,
-			[this](AsyncWebServerRequest *request) {
-				on_get_settings(request);
-			});
-	server.on("/settings.html", HTTP_POST,
-			[this](AsyncWebServerRequest *request) {
-				on_post_settings(request);
-			});
-
-	// stylesheets
+	// register static pages
 	server.on("/header.css", HTTP_GET, [this](AsyncWebServerRequest *request) {
 		request->send(200, "text/css", HEADER_CSS);
 	});
+
 	server.on("/index.css", HTTP_GET, [this](AsyncWebServerRequest *request) {
 		request->send(200, "text/css", INDEX_CSS);
 	});
+
 	server.on("/main.css", HTTP_GET, [this](AsyncWebServerRequest *request) {
 		request->send(200, "text/css", MAIN_CSS);
 	});
 
-	// javascript
 	server.on("/index.js", HTTP_GET, [this](AsyncWebServerRequest *request) {
 		request->send(200, "text/javascript", INDEX_JS);
-	});
-
-	// json
-	server.on("/properties.json", HTTP_GET,
-			[this](AsyncWebServerRequest *request) {
-				on_get_properties_json(request);
-			});
-
-	// errors
-	server.onNotFound([this](AsyncWebServerRequest *request) {
-		on_not_found(request);
 	});
 
 	server.begin();
@@ -294,6 +189,27 @@ string WebserverHandler::finish_header(string page, string username,
 	}
 
 	return page;
+}
+
+void WebserverHandler::register_redirect(const char *url,
+		const char *target_url) {
+	server.on(url, HTTP_ANY,
+			[this, target_url](AsyncWebServerRequest *request) {
+				if (request->hasParam("s")) {
+					request->redirect(
+							string(target_url).append("?s=").append(
+									request->getParam("s")->value().c_str()).c_str());
+				} else {
+					request->redirect(target_url);
+				}
+			});
+}
+
+void WebserverHandler::register_url_callback(const uint8_t http_code,
+		const char *url, function<void(AsyncWebServerRequest*)> callback) {
+	server.on(url, http_code, [this, callback](AsyncWebServerRequest *request) {
+		callback(request);
+	});
 }
 
 void WebserverHandler::on_get_index(AsyncWebServerRequest *request) {

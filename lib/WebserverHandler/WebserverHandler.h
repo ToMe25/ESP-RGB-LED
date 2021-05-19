@@ -43,7 +43,8 @@ extern const char ADMIN_PASSWORD[] asm("_binary_adminpass_txt_start");
 
 class WebserverHandler {
 public:
-	WebserverHandler(LedHandler &led_handler, bool default_require_login = true);
+	WebserverHandler(LedHandler &led_handler,
+			bool default_require_login = true);
 	virtual ~WebserverHandler();
 
 	void init();
@@ -64,8 +65,15 @@ public:
 
 private:
 	std::string get_session(AsyncWebServerRequest *request);
-	std::pair<std::string, std::string> check_login(AsyncWebServerRequest *request);
-	std::string finish_header(std::string page, std::string username, std::string session_id);
+	std::pair<std::string, std::string> check_login(
+			AsyncWebServerRequest *request);
+	std::string finish_header(std::string page, std::string username,
+			std::string session_id);
+
+	void register_redirect(const char *url, const char *target_url);
+	void register_url_callback(const uint8_t http_code,
+			const char *url,
+			std::function<void(AsyncWebServerRequest*)> callback);
 
 	AsyncWebServer server = AsyncWebServer(PORT);
 
