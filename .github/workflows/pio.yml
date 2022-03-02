@@ -40,8 +40,9 @@ jobs:
 
       - name: Create crdential files
         run: |
-          echo "Administrator Password" > adminpass.txt
+          echo "Admin Password" > adminpass.txt
           echo "WiFi SSID" > wifissid.txt
           echo "WiFi Passphrase" > wifipass.txt
+
       - name: Run Platform IO builds
         run: pio run
